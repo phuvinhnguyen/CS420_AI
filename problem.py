@@ -34,6 +34,9 @@ class knapsack(object):
         '''item index n will be (class[n], value[n], weight[n], quatity[n])'''
         return (self.c[key], self.v[key], self.w[key], self.q[key])
 
+    def getMaxWeight(self):
+        return self.W
+
     def len(self):
         '''return number of items'''
         return len(self.c)
