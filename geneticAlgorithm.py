@@ -24,7 +24,8 @@ class geneticAl:
             if tmp[0] not in self.item_class:
                 self.item_class.append(tmp[0]) 
 
-    def crossover(self, a:ba, b:ba, part:int):
+    def crossover(self, a:ba, b:ba):
+        part = int(self.length / 2)
         ta = a[:part]+b[part:]
         tb = b[:part]+a[part:]
         return ta, tb
@@ -49,7 +50,7 @@ class geneticAl:
         
         return ret_inf
 
-    def selection(self, turns = 3):
+    def selection(self, turns = 4):
         i=0
         maxScore = 0
         iindex = 0
@@ -62,25 +63,72 @@ class geneticAl:
             if score[1] > self.maxWeight:
                 tw = score[1] - self.maxWeight
             
-            score = score[0]*score[0]/(score[2]*2 + tw*tw)
+            score = score[0]*score[0]/(int(score[2])*2 + tw*tw + 1)
 
             if score > maxScore:
                 maxScore = score
                 iindex = index
             i += 1
 
-        return self.childs[iindex]
+        return (self.childs[iindex], iindex)
     
-    def fit_gen(self, mutation_rate):
-        
-        pass
+    def selection_min(self, turns=4):
+        i=0
+        minScore = -1
+        iindex = 0
 
-    def fit(self, epochs, mutation_rate):
-        pass
+        while i < turns:
+            index = randint(0,len(self.childs))
+            score = self.calculate(self.childs[index])
 
-    def __call__(self, problem:problem.knapsack) -> problem.result:
-        pass
+            tw = 0
+            if score[1] > self.maxWeight:
+                tw = score[1] - self.maxWeight
+            
+            score = score[0]*score[0]/(int(score[2])*2 + tw*tw + 1)
 
+            if minScore == -1:
+                minScore = score
+
+            if score < minScore:
+                minScore = score
+                iindex = index
+            i += 1
+
+        return iindex
+
+    def step(self, mutation_rate=0.1):
+        #crossover
+        (a, ia), (b, ib) = self.selection(), self.selection()
+        a, b = self.crossover(a,b)
+
+        ria, rib = self.selection_min(), self.selection_min()
+        self.childs[ria] = a
+        self.childs[rib] = b
+
+        #mutation
+        rani = int(randint(0,10) / 10)
+        if rani <= mutation_rate:
+            t, it = self.selection(1)
+            t = self.mutation(t)
+
+            rit = self.selection_min()
+            self.childs[rit] = t
+
+    def fit(self, epochs, mutation_rate=0.1):
+        i = 0
+        while i < epochs:
+            self.step(mutation_rate=mutation_rate)
+            i += 1
+
+    def __call__(self, problem:problem.knapsack, epochs = 100, mutation_rate = 0.1) -> problem.result:
+        self.extract_neccessary_data(problem=problem)
+        self.fit(epochs=epochs, mutation_rate=mutation_rate)
+
+    def recent_results(self):
+        for i in self.childs:
+            
+            pass
 
 if __name__ == '__main__':
     a = ba('0100100')
