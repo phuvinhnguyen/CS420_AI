@@ -1,4 +1,4 @@
-import problem
+from problem import knapsack
 from bitarray import bitarray as ba
 from random import randint
 
@@ -9,7 +9,7 @@ class geneticAl:
     def initialize(self, init_items:int = 5) -> None:
         self.childs = [self.length*ba('0')]*init_items
 
-    def extract_neccessary_data(self, problem:problem.knapsack):
+    def extract_neccessary_data(self, problem:knapsack):
         '''
         return length_of_each_item, list_of_begin_index
         '''
@@ -43,7 +43,8 @@ class geneticAl:
             if b == 1:
                 tmp_v += t[1]
                 tmp_w += t[2]
-                tmp_c.remove(t[0])
+                if t[0] in tmp_c:
+                    tmp_c.remove(t[0])
 
         ##TODO: ADD INFORMATION TO RESULT AND RETURN IT
         ret_inf = (tmp_v, tmp_w, len(tmp_c)==0)
@@ -56,7 +57,7 @@ class geneticAl:
         iindex = 0
 
         while i < turns:
-            index = randint(0,len(self.childs))
+            index = randint(0,len(self.childs)-1)
             score = self.calculate(self.childs[index])
 
             tw = 0
@@ -72,20 +73,20 @@ class geneticAl:
 
         return (self.childs[iindex], iindex)
     
-    def selection_min(self, turns=4):
+    def selection_min(self, turns=6):
         i=0
         minScore = -1
         iindex = 0
 
         while i < turns:
-            index = randint(0,len(self.childs))
+            index = randint(0,len(self.childs)-1)
             score = self.calculate(self.childs[index])
 
             tw = 0
             if score[1] > self.maxWeight:
                 tw = score[1] - self.maxWeight
             
-            score = score[0]*score[0]/(int(score[2])*2 + tw*tw + 1)
+            score = score[0]*score[0]/(int(score[2])*2 + (5*tw)**2 + 1)
 
             if minScore == -1:
                 minScore = score
@@ -121,17 +122,17 @@ class geneticAl:
             self.step(mutation_rate=mutation_rate)
             i += 1
 
-    def __call__(self, problem:problem.knapsack, epochs = 100, mutation_rate = 0.1) -> problem.result:
+    def __call__(self, problem:knapsack, init = 10, epochs = 100, mutation_rate = 0.1) -> None:
         self.extract_neccessary_data(problem=problem)
+        self.initialize(init)
         self.fit(epochs=epochs, mutation_rate=mutation_rate)
 
     def recent_results(self):
         for i in self.childs:
-            
-            pass
+            print(i, self.calculate(i))
 
 if __name__ == '__main__':
-    a = ba('0100100')
-    b = ba('1100011')
-    a[0]=1-a[0]
-    print(a)
+    prob = knapsack('./data.json')
+    sol = geneticAl()
+    sol(problem=prob, epochs=100)
+    print(sol.recent_results())

@@ -5,7 +5,7 @@ class knapsack(object):
     data file structure example:
     {
         "max weight": 5,
-        "class"     : ['red','green','red'],
+        "class"     : ["red","green","red"],
         "value"     : [2,3,1],
         "weight"    : [3,2,1],
         "quatity"   : [3,2,1]
