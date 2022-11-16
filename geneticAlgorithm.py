@@ -20,7 +20,7 @@ class geneticAl:
         for i in range(problem.len()):
             tmp = problem[i]
             self.length += tmp[-1]
-            self.denote.append(tmp[0:-1])
+            self.denote += [tmp[0:-1]]*tmp[-1]
             if tmp[0] not in self.item_class:
                 self.item_class.append(tmp[0]) 
 
@@ -64,7 +64,7 @@ class geneticAl:
             if score[1] > self.maxWeight:
                 tw = score[1] - self.maxWeight
             
-            score = score[0]*score[0]/(int(score[2])*2 + tw*tw + 1)
+            score = score[0]*score[0]/(int(score[2])*2 + (5*tw)**2 + 1)
 
             if score > maxScore:
                 maxScore = score
@@ -127,12 +127,41 @@ class geneticAl:
         self.initialize(init)
         self.fit(epochs=epochs, mutation_rate=mutation_rate)
 
-    def recent_results(self):
+    def decode(self, a:ba):
+        result = {}
+        for (i,j) in zip(a, self.denote):
+            if i == 1:
+                if j not in result:
+                    result[j] = 0
+                result[j] = result[j] + 1
+
+        result_str = []
+        for i in result:
+            tmp_str = str(i) + ':' + str(result[i])
+            result_str.append(tmp_str)
+
+        return result_str
+
+    def recent_ba(self):
         for i in self.childs:
             print(i, self.calculate(i))
+
+    def recent_results(self):
+        result = []
+        for i in self.childs:
+            result.append(self.decode(i))
+
+        return result
 
 if __name__ == '__main__':
     prob = knapsack('./data.json')
     sol = geneticAl()
     sol(problem=prob, epochs=100)
-    print(sol.recent_results())
+    result = sol.recent_results()
+
+    #print(sol.recent_ba())
+
+    print('Example: (\'r\', 3, 1):2 means class \'r\', value 3, weight 1, and select 2 of them')
+
+    for i in result[0]:
+        print(i)
