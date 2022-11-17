@@ -7,7 +7,7 @@ class split_data:
         return self.data[key*5:key*5+5]
     
     def len(self):
-        return len(self.data) / 5
+        return int(len(self.data) / 5)
 
 
 class knapsack(object):

@@ -1,6 +1,6 @@
 from random import randint
 import numpy as np
-from problem import knapsack
+from problem import knapsack, split_data
 
 class geneticAl:
     def __init__(self):
@@ -93,13 +93,13 @@ class geneticAl:
             _, rit = self.selection_min()
             self.childs[rit] = t
 
-    def fit(self, epochs, verbose = 5, mutation_rate=0.1):
+    def fit(self, epochs, verbose = 1, mutation_rate=0.1):
         i = 0
         while i < epochs:
             self.step(mutation_rate=mutation_rate)
             if i % verbose == 0:
-                _, b = self.best_value()
-                print('epoch ' ,i, ': ', b)
+                _, b, w, c = self.best_value()
+                print('epoch ' ,i, ': v(', b,'), w(',w,'), c(',c,')')
             i += 1
 
     def __call__(self, problem:knapsack, init = 1000, epochs = 1000, mutation_rate = 0.1) -> None:
@@ -114,6 +114,8 @@ class geneticAl:
 
     def best_value(self):
         vmax = 0
+        w = 0
+        c = 0
         result = None
         for child in self.childs:
             _v, _w, _c = 0, 0, self.item_class
@@ -126,19 +128,26 @@ class geneticAl:
             if _w < self.problem.getMaxWeight() and len(_c) == 0 and _v > vmax:
                 vmax = _v
                 result = child
+                w = _w
+                c = len(_c)
         
-        return result, vmax
+        return result, vmax, w, c
                 
 if __name__ == '__main__':
-    prob = knapsack('./INPUT_x.txt')
-    sol = geneticAl()
-    sol(problem=prob, epochs=100)
-    result, vmax = sol.best_value()
+    data = split_data('small_dataset.txt')
 
-    # sol.print()
-    print(vmax)
-    result = str(result)
-    if result != 'None':
-        print(result[1:-1])
-    else:
-        print('None')
+    for i in range(0,1):
+        prob = knapsack(data=data[i])
+        sol = geneticAl()
+        sol(init=20, problem=prob, epochs=100)
+        result, vmax, _, _ = sol.best_value()
+
+        # sol.print()
+        print(vmax)
+        result = str(result)
+        if result != 'None':
+            print(result[1:-1])
+        else:
+            print('None')
+
+        print('----------------------------------------')
