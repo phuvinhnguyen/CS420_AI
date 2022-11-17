@@ -1,7 +1,7 @@
 from random import randint
 import numpy as np
 from problem import knapsack, split_data
-from math import sqrt
+from math import sqrt, log
 
 class geneticAl:
     def __init__(self):
@@ -49,30 +49,38 @@ class geneticAl:
 
     def selection(self, turns = 6):
         i=0
-        maxScore = 0
-        iindex = 0
+        maxScore1 = 0
+        iindex1 = 0
+        maxScore2 = 0
+        iindex2 = 0
 
         while i < turns:
             index = randint(0,len(self.childs)-1)
             score = self.score(self.childs[index])
 
-            if score > maxScore:
-                maxScore = score
-                iindex = index
+            if score > maxScore1:
+                maxScore1 = score
+                iindex1 = index
+            elif score > maxScore2 and index != iindex1:
+                maxScore2 = score
+                iindex2 = index
             i += 1
 
-        return self.childs[iindex]
+        return self.childs[iindex1], self.childs[iindex2]
 
     def step(self, mutation_rate=0.1):
         #select
-        selected = [self.selection(int(sqrt(self.length))) for _ in range(self.problem.len())]
+        #selected = [self.selection(int(log(self.length)) + 3) for _ in range(self.problem.len())]
 
         next_gen = list()
         for i in range(0, self.problem.len()-1, 2):
-            p1, p2 = selected[i], selected[i+1]
+            #choose parent
+            p1, p2 = self.selection(int(log(self.length)) + 3)
+            #crossover
             c1,c2 = self.crossover(p1,p2)
 
-            if randint(0,10)/10 > mutation_rate:
+            #mutation
+            if randint(0,10)/10 < mutation_rate:
                 c1,c2 = self.mutation(c1), self.mutation(c2)
             
             next_gen.append(c1)
@@ -120,13 +128,14 @@ class geneticAl:
         return result, vmax, w, c
                 
 if __name__ == '__main__':
-    data = split_data('small_dataset.txt')
+    data = split_data('large_dataset.txt')
+
 
     for i in range(data.len()):
         prob = knapsack(data=data[1])
         sol = geneticAl()
 
-        sol(init=100, problem=prob, epochs=100, mutation_rate=0.3, verbose=25)
+        sol(init=20, problem=prob, epochs=100, mutation_rate=0.3, verbose=10)
         result, vmax, _, _ = sol.best_value()
 
         print(vmax)
