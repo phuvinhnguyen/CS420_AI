@@ -1,12 +1,10 @@
 from random import randint
 import numpy as np
 from problem import knapsack, split_data
+from math import sqrt
 
 class geneticAl:
     def __init__(self):
-        pass
-
-    def crossover(self, a, b):
         pass
 
     def initialize(self, init_items:int = 5) -> None:
@@ -20,14 +18,15 @@ class geneticAl:
         self.problem = problem
 
     def crossover(self, a, b):
-        part = int(self.length / 2)
+        part = randint(0,self.length-1)
         ta = a[:part]+b[part:]
         tb = b[:part]+a[part:]
         return ta, tb
 
     def mutation(self, a):
-        pos = randint(0, self.length-1)
-        a[pos] = 1-a[pos]
+        for i in range(len(a)):
+            if randint(0,10)/10 < 0.35:
+                a[i] = 1-a[i]
         return a
     
     def score(self, a):
@@ -41,9 +40,14 @@ class geneticAl:
                 if j[0] in _c:
                     _c.remove(j[0])
         
-        return _v*_v/((10*_w)**2 + (100*int(len(_c) == 0))**2 + 1)
+        if _w > self.problem.getMaxWeight():
+            return _v/(abs(_w-self.problem.getMaxWeight()) + 1)
+        elif len(_c) > 0:
+            return _v*0.7
 
-    def selection_max(self, turns = 4):
+        return _v
+
+    def selection(self, turns = 6):
         i=0
         maxScore = 0
         iindex = 0
@@ -57,43 +61,26 @@ class geneticAl:
                 iindex = index
             i += 1
 
-        return (self.childs[iindex], iindex)
-
-    def selection_min(self, turns = 6):
-        i=0
-        minScore = 0
-        iindex = 0
-
-        while i < turns:
-            index = randint(0,len(self.childs)-1)
-            score = self.score(self.childs[index])
-
-            if score < minScore:
-                minScore = score
-                iindex = index
-            i += 1
-
-        return (self.childs[iindex], iindex)
+        return self.childs[iindex]
 
     def step(self, mutation_rate=0.1):
-        #crossover
-        (a, _), (b, _) = self.selection_max(), self.selection_min()
-        a, b = self.crossover(a,b)
+        #select
+        selected = [self.selection(int(sqrt(self.length))) for _ in range(self.problem.len())]
 
-        (_, ria), (_, rib) = self.selection_min(), self.selection_min()
-        self.childs[ria] = a
-        self.childs[rib] = b
+        next_gen = list()
+        for i in range(0, self.problem.len()-1, 2):
+            p1, p2 = selected[i], selected[i+1]
+            c1,c2 = self.crossover(p1,p2)
 
-        #mutation
-        rani = int(randint(0,10) / 10)
-        if rani <= mutation_rate:
-            t, it = self.selection_max(1)
-            t = self.mutation(t)
+            if randint(0,10)/10 > mutation_rate:
+                c1,c2 = self.mutation(c1), self.mutation(c2)
+            
+            next_gen.append(c1)
+            next_gen.append(c2)
+        
+        self.childs = next_gen
 
-            _, rit = self.selection_min()
-            self.childs[rit] = t
-
-    def fit(self, epochs, verbose = 1, mutation_rate=0.1):
+    def fit(self, epochs, verbose = 50, mutation_rate=0.1):
         i = 0
         while i < epochs:
             self.step(mutation_rate=mutation_rate)
@@ -102,15 +89,14 @@ class geneticAl:
                 print('epoch ' ,i, ': v(', b,'), w(',w,'), c(',c,')')
             i += 1
 
-    def __call__(self, problem:knapsack, init = 1000, epochs = 1000, mutation_rate = 0.1) -> None:
+    def __call__(self, problem:knapsack, init = 1000, epochs = 1000, verbose = 100, mutation_rate = 0.1) -> None:
         self.extract_neccessary_data(problem=problem)
         self.initialize(init)
-        self.fit(epochs=epochs, mutation_rate=mutation_rate)
-
+        self.fit(epochs=epochs, mutation_rate=mutation_rate, verbose=verbose)
 
     def print(self):
         for i in self.childs:
-            print(i)
+            print(i, self.score(i))
 
     def best_value(self):
         vmax = 0
@@ -136,13 +122,13 @@ class geneticAl:
 if __name__ == '__main__':
     data = split_data('small_dataset.txt')
 
-    for i in range(0,1):
-        prob = knapsack(data=data[i])
+    for i in range(data.len()):
+        prob = knapsack(data=data[1])
         sol = geneticAl()
-        sol(init=20, problem=prob, epochs=100)
+
+        sol(init=100, problem=prob, epochs=100, mutation_rate=0.3, verbose=25)
         result, vmax, _, _ = sol.best_value()
 
-        # sol.print()
         print(vmax)
         result = str(result)
         if result != 'None':
