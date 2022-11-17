@@ -1,70 +1,56 @@
-from problem import knapsack
-from bitarray import bitarray as ba
 from random import randint
+import numpy as np
+from problem import knapsack
 
 class geneticAl:
     def __init__(self):
         pass
 
+    def crossover(self, a, b):
+        pass
+
     def initialize(self, init_items:int = 5) -> None:
-        self.childs = [self.length*ba('0')]*init_items
+        self.childs = []
+        for i in range(init_items):
+            self.childs.append(list(np.random.randint(0, 2, self.length)))
 
     def extract_neccessary_data(self, problem:knapsack):
-        '''
-        return length_of_each_item, list_of_begin_index
-        '''
         self.length = problem.len()
-        self.maxWeight = problem.getMaxWeight()
-        self.denote = []
-        self.item_class = []
-        for i in range(problem.len()):
-            tmp = problem[i]
-            self.length += tmp[-1]
-            self.denote += [tmp[0:-1]]*tmp[-1]
-            if tmp[0] not in self.item_class:
-                self.item_class.append(tmp[0]) 
+        self.item_class = [i for i in range(1,problem.c_num+1)]
+        self.problem = problem
 
-    def crossover(self, a:ba, b:ba):
+    def crossover(self, a, b):
         part = int(self.length / 2)
         ta = a[:part]+b[part:]
         tb = b[:part]+a[part:]
         return ta, tb
 
-    def mutation(self, a:ba):
+    def mutation(self, a):
         pos = randint(0, self.length-1)
         a[pos] = 1-a[pos]
         return a
-
-    def calculate(self, child:ba):
-        tmp_v = 0
-        tmp_w = 0
-        tmp_c = self.item_class
-        for (b,t) in zip(child, self.denote):
-            if b == 1:
-                tmp_v += t[1]
-                tmp_w += t[2]
-                if t[0] in tmp_c:
-                    tmp_c.remove(t[0])
-
-        ##TODO: ADD INFORMATION TO RESULT AND RETURN IT
-        ret_inf = (tmp_v, tmp_w, len(tmp_c)==0)
+    
+    def score(self, a):
+        _w = 0
+        _v = 0
+        _c = self.item_class
+        for (i,j) in zip(a,[self.problem[t] for t in range(0,self.length)]):
+            if i == 1:
+                _w += j[2]
+                _v += j[1]
+                if j[0] in _c:
+                    _c.remove(j[0])
         
-        return ret_inf
+        return _v*_v/((10*_w)**2 + (100*int(len(_c) == 0))**2 + 1)
 
-    def selection(self, turns = 4):
+    def selection_max(self, turns = 4):
         i=0
         maxScore = 0
         iindex = 0
 
         while i < turns:
             index = randint(0,len(self.childs)-1)
-            score = self.calculate(self.childs[index])
-
-            tw = 0
-            if score[1] > self.maxWeight:
-                tw = score[1] - self.maxWeight
-            
-            score = score[0]*score[0]/(int(score[2])*2 + (5*tw)**2 + 1)
+            score = self.score(self.childs[index])
 
             if score > maxScore:
                 maxScore = score
@@ -72,96 +58,87 @@ class geneticAl:
             i += 1
 
         return (self.childs[iindex], iindex)
-    
-    def selection_min(self, turns=6):
+
+    def selection_min(self, turns = 6):
         i=0
-        minScore = -1
+        minScore = 0
         iindex = 0
 
         while i < turns:
             index = randint(0,len(self.childs)-1)
-            score = self.calculate(self.childs[index])
-
-            tw = 0
-            if score[1] > self.maxWeight:
-                tw = score[1] - self.maxWeight
-            
-            score = score[0]*score[0]/(int(score[2])*2 + (5*tw)**2 + 1)
-
-            if minScore == -1:
-                minScore = score
+            score = self.score(self.childs[index])
 
             if score < minScore:
                 minScore = score
                 iindex = index
             i += 1
 
-        return iindex
+        return (self.childs[iindex], iindex)
 
     def step(self, mutation_rate=0.1):
         #crossover
-        (a, ia), (b, ib) = self.selection(), self.selection()
+        (a, _), (b, _) = self.selection_max(), self.selection_min()
         a, b = self.crossover(a,b)
 
-        ria, rib = self.selection_min(), self.selection_min()
+        (_, ria), (_, rib) = self.selection_min(), self.selection_min()
         self.childs[ria] = a
         self.childs[rib] = b
 
         #mutation
         rani = int(randint(0,10) / 10)
         if rani <= mutation_rate:
-            t, it = self.selection(1)
+            t, it = self.selection_max(1)
             t = self.mutation(t)
 
-            rit = self.selection_min()
+            _, rit = self.selection_min()
             self.childs[rit] = t
 
-    def fit(self, epochs, mutation_rate=0.1):
+    def fit(self, epochs, verbose = 5, mutation_rate=0.1):
         i = 0
         while i < epochs:
             self.step(mutation_rate=mutation_rate)
+            if i % verbose == 0:
+                _, b = self.best_value()
+                print('epoch ' ,i, ': ', b)
             i += 1
 
-    def __call__(self, problem:knapsack, init = 10, epochs = 100, mutation_rate = 0.1) -> None:
+    def __call__(self, problem:knapsack, init = 1000, epochs = 1000, mutation_rate = 0.1) -> None:
         self.extract_neccessary_data(problem=problem)
         self.initialize(init)
         self.fit(epochs=epochs, mutation_rate=mutation_rate)
 
-    def decode(self, a:ba):
-        result = {}
-        for (i,j) in zip(a, self.denote):
-            if i == 1:
-                if j not in result:
-                    result[j] = 0
-                result[j] = result[j] + 1
 
-        result_str = []
-        for i in result:
-            tmp_str = str(i) + ':' + str(result[i])
-            result_str.append(tmp_str)
-
-        return result_str
-
-    def recent_ba(self):
+    def print(self):
         for i in self.childs:
-            print(i, self.calculate(i))
+            print(i)
 
-    def recent_results(self):
-        result = []
-        for i in self.childs:
-            result.append(self.decode(i))
-
-        return result
-
+    def best_value(self):
+        vmax = 0
+        result = None
+        for child in self.childs:
+            _v, _w, _c = 0, 0, self.item_class
+            for (i, j) in zip(child, [self.problem[t] for t in range(0, self.length)]):
+                if i == 1:
+                    _v += j[1]
+                    _w += j[2]
+                    if j[0] in _c:
+                        _c.remove(j[0])
+            if _w < self.problem.getMaxWeight() and len(_c) == 0 and _v > vmax:
+                vmax = _v
+                result = child
+        
+        return result, vmax
+                
 if __name__ == '__main__':
-    prob = knapsack('./data.json')
+    prob = knapsack('./INPUT_x.txt')
     sol = geneticAl()
     sol(problem=prob, epochs=100)
-    result = sol.recent_results()
+    result, vmax = sol.best_value()
 
-    #print(sol.recent_ba())
-
-    print('Example: (\'r\', 3, 1):2 means class \'r\', value 3, weight 1, and select 2 of them')
-
-    for i in result[0]:
-        print(i)
+    # sol.print()
+    print(vmax)
+    result = str(result)
+    if result != 'None':
+        print(result[1:-1])
+    else:
+        print('None')
