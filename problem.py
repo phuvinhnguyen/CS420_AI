@@ -1,52 +1,41 @@
 import json
 
 class knapsack(object):
-    '''
-    data file structure example:
-    {
-        "max weight": 5,
-        "class"     : ["red","green","red"],
-        "value"     : [2,3,1],
-        "weight"    : [3,2,1],
-        "quatity"   : [3,2,1]
-    }
+    def __init__(self, path='./INPUT_x.txt'):
+        with open(path, 'r') as rf:
+            data = rf.readlines()
 
-    data in this class:
-    - self.c: class         (str list)
-    - self.W: max weight    (float)
-    - self.w: weight        (float list)
-    - self.v: value         (float list)
-    - self.q: quatity       (int list)
+            self.W = int(data[0])
+            self.c_num = int(data[1])
 
-    NOTE: len(class) = len(value) = len(weight) = len(quatity)
-        - item index n will be (class[n], value[n], weight[n], quatity[n])
-    '''
-    def __init__(self, path='./data.json'):
-        with open(path) as rf:
-            data = json.load(rf)
-            self.c = data['class']
-            self.W = data['max weight']
-            self.v = data['value']
-            self.w = data['weight']
-            self.q = data['quatity']
+            self.w = data[2].split(',')
+            self.v = data[3].split(',')
+            self.c = data[4].split(',')
+            # self.W = data['max weight']
+            # self.v = data['value']
+            # self.w = data['weight']
+            # self.q = data['quatity']
 
-    def __getitem__(self, key):
+    def __getitem__(self, key:int):
         '''item index n will be (class[n], value[n], weight[n], quatity[n])'''
-        return (self.c[key], self.v[key], self.w[key], self.q[key])
+        return (self.c[key], self.v[key], self.w[key])
 
     def getMaxWeight(self):
         return self.W
 
+    def getClassNum(self):
+        return self.c_num
+
     def len(self):
         '''return number of items'''
-        return len(self.c)
+        return len(len(self.c))
         
     
-class result:
-    '''
-    the quatity of each item that we take:
-    for ex:
-        self.res = [1,2,1] means: take 1 from item 1, 2 from item 2, 1 from item 3
-    '''
-    def __init__(self, res:list):
-        self.res = res
+# class result:
+#     '''
+#     the quatity of each item that we take:
+#     for ex:
+#         self.res = [1,2,1] means: take 1 from item 1, 2 from item 2, 1 from item 3
+#     '''
+#     def __init__(self, res:list):
+#         self.res = res

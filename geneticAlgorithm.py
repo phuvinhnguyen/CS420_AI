@@ -13,7 +13,7 @@ class geneticAl:
         '''
         return length_of_each_item, list_of_begin_index
         '''
-        self.length = 0
+        self.length = problem.len()
         self.maxWeight = problem.getMaxWeight()
         self.denote = []
         self.item_class = []
