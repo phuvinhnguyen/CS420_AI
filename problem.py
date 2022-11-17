@@ -1,14 +1,23 @@
-class knapsack(object):
+class split_data:
     def __init__(self, path='./INPUT_x.txt'):
-        with open(path, 'r') as rf:
-            data = rf.readlines()
+        with open(path) as rf:
+            self.data = rf.readlines()
+    
+    def __getitem__(self, key:int):
+        return self.data[key*5:key*5+5]
+    
+    def len(self):
+        return len(self.data) / 5
 
-            self.W = int(data[0])
-            self.c_num = int(data[1])
 
-            self.w = data[2].split(',')
-            self.v = data[3].split(',')
-            self.c = data[4].split(',')
+class knapsack(object):
+    def __init__(self, data):
+        self.W = int(data[0])
+        self.c_num = int(data[1])
+
+        self.w = data[2].split(',')
+        self.v = data[3].split(',')
+        self.c = data[4].split(',')
 
     def __getitem__(self, key:int):
         '''item index n will be (class[n], value[n], weight[n])'''
