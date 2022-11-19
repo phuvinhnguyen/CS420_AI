@@ -19,20 +19,23 @@ class geneticAl:
         self.problem = problem
 
     def crossover(self, a, b):
-        part = randint(1,self.length-1)
+        begin = int(self.length / 5)
+        end = int(self.length * 4/5)
+        part = randint(begin, end)
         ta = a[:part]+b[part:]
         tb = b[:part]+a[part:]
         return ta, tb
 
     def mutation(self, a):
         #mutation with priority tasks
-        if self.overW(a):
+        overW = self.overW(a)
+        if overW != 0:
             for i in range(len(a)):
-                if randint(0,10)/10 < 0.35:
+                if randint(0,10)/10 > self.problem.W / overW:
                     a[i] = 0
         else:
             for i in range(len(a)):
-                if randint(0,10)/10 < 0.35:
+                if randint(0,10)/10 < 0.1:
                     a[i] = 1-a[i]
         return a
     
@@ -41,9 +44,9 @@ class geneticAl:
         for i,j in zip(a, [self.problem[t] for t in range(0,self.length)]):
             if i == 1:
                 w += j[2]
-            if w > self.problem.W:
-                return True
-        return False
+        if w > self.problem.W:
+            return w
+        return 0
 
     def score(self, a):
         _w = 0
@@ -57,11 +60,11 @@ class geneticAl:
                     _c.remove(j[0])
         
         if _w > self.problem.getMaxWeight():
-            return log(_v)/(abs(_w-self.problem.getMaxWeight()))
+            return _v/(sqrt(_w-self.problem.getMaxWeight())+len(_c)*len(_c) + 1)
         elif len(_c) > 0:
-            return _v*0.1
+            return _v/(len(_c) * len(_c) + 1)
 
-        return _v + 10
+        return _v
 
     def selection(self, turns = 6):
         i=0
@@ -71,7 +74,7 @@ class geneticAl:
         iindex2 = 0
 
         while i < turns:
-            index = randint(0,len(self.childs)-1)
+            index = randint(0,self.number_of_gen-1)
             score = self.score(self.childs[index])
 
             if score > maxScore1:
@@ -106,12 +109,9 @@ class geneticAl:
         return iindex1, iindex2
 
     def step(self, mutation_rate=0.1):
-        #select
-        #selected = [self.selection(int(log(self.length)) + 3) for _ in range(self.problem.len())]
-
-        for i in range(0, self.number_of_gen):
+        # for i in range(0, self.number_of_gen):
             #choose parent
-            p1, p2 = self.selection(sqrt(self.number_of_gen))
+            p1, p2 = self.selection(log(self.number_of_gen))
             #crossover
             c1,c2 = self.crossover(p1,p2)
 
@@ -119,13 +119,12 @@ class geneticAl:
             if randint(0,10)/10 < mutation_rate:
                 c1,c2 = self.mutation(c1), self.mutation(c2)
             
-            iindex1, iindex2 = self.removei(sqrt(self.number_of_gen))
+            iindex1, iindex2 = self.removei(log(self.number_of_gen))
             self.childs[iindex1], self.childs[iindex2] = c1,c2
 
     def fit(self, epochs, view, verbose = 50, mutation_rate=0.1):
         i = 0
         while i < epochs:
-            self.step(mutation_rate=mutation_rate)
             if i % verbose == 0:
                 if view == 0:
                     _, b, w, c = self.best_value()
@@ -133,6 +132,7 @@ class geneticAl:
                 elif view == 1:
                     scr, chi = self.best_score()
                     print('epoch ' ,i, ': s(', scr,')')
+            self.step(mutation_rate=mutation_rate)
             i += 1
 
     def __call__(self, problem:knapsack, init = 1000, epochs = 1000, verbose = 100, view = 0, mutation_rate = 0.1) -> None:
@@ -141,8 +141,10 @@ class geneticAl:
         self.fit(epochs=epochs, mutation_rate=mutation_rate, verbose=verbose, view = view)
 
     def print(self):
+        print('___________________________________________')
         for i in self.childs:
-            print(i, self.score(i))
+            print(self.score(i))
+        print('___________________________________________')
 
     def best_score(self):
         max = 0
@@ -177,21 +179,23 @@ class geneticAl:
         return result, vmax, w, c
                 
 if __name__ == '__main__':
-    data = split_data('large_dataset.txt')
+    data = split_data('input/small_dataset.txt')
 
+    with open('output/OUTPUT_'+str(data.len())+'.txt', 'w') as wf:
+        for i in range(data.len()):
+            prob = knapsack(data=data[i])
+            sol = geneticAl()
 
-    for i in range(data.len()):
-        prob = knapsack(data=data[i])
-        sol = geneticAl()
+            sol(init=10, problem=prob, epochs=500, mutation_rate=0.85, verbose=10000, view = 1)
+            result, vmax, _, _ = sol.best_value()
 
-        sol(init=100, problem=prob, epochs=10, mutation_rate=0.3, verbose=5, view = 0)
-        result, vmax, _, _ = sol.best_value()
+            print(vmax)
+            result = str(result)
+            wf.write(str(vmax) + '\n')
+            wf.write(result + '\n')
+            if result != 'None':
+                print(result[1:-1])
+            else:
+                print('None')
 
-        print(vmax)
-        result = str(result)
-        if result != 'None':
-            print(result[1:-1])
-        else:
-            print('None')
-
-        print('----------------------------------------')
+            print('----------------------------------------')
