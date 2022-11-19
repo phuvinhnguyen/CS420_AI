@@ -1,0 +1,62 @@
+function crossover(gena, genb){
+    ngena, ngenb
+
+    crossover_position = random(1,len(gena))
+
+    ngena = gena[0 to crossover_position] attach genb[crossover_position to final]
+    ngenb = genb[0 to crossover_position] attach gena[crossover_position to final]
+
+    return ngena, ngenb
+}
+
+function mutation(gena){
+    for each binary in gena:
+        rate = random(0,10)
+        if rate <= 1:
+            binary = 1 - binary
+
+    return gena as new gen after mutation
+}
+
+function parent_selection(list_of_current_gen, number_of_select){
+    max1, index1, max2, index2
+
+    for i = 0, i < number_of_select, i = i + 1:
+        index = random(0, len(list_of_current_gen))
+        gen = list_of_current_gen[index]
+
+        if score(gen) > max1:
+            max1 = score(gen)
+            index1 = index
+        else if score(gen) > max2:
+            max2 = score(gen)
+            index2 = index
+
+    return list_of_current_gen[index1], list_of_current_gen[index2]
+}
+
+function fit(){
+
+}
+
+function greatestCommonDivisor(Argument one, Argument two){
+    if Argument two is equal to zero
+        then return Argument one
+  
+    return the greatest common divisor
+  
+end
+}
+  
+{
+In the main function
+     
+   print prompt "Input two numbers"
+         
+   Take the first number from the user
+   Take the second number from the user
+  
+   Send the first number and second number 
+   to the lcmNaive function and print
+   the result to the user   
+}
