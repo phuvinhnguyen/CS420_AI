@@ -109,18 +109,16 @@ class geneticAl:
         return iindex1, iindex2
 
     def step(self, mutation_rate=0.1):
-        # for i in range(0, self.number_of_gen):
-            #choose parent
-            p1, p2 = self.selection(log(self.number_of_gen))
-            #crossover
-            c1,c2 = self.crossover(p1,p2)
+        p1, p2 = self.selection(log(self.number_of_gen))
+        #crossover
+        c1,c2 = self.crossover(p1,p2)
 
-            #mutation
-            if randint(0,10)/10 < mutation_rate:
-                c1,c2 = self.mutation(c1), self.mutation(c2)
-            
-            iindex1, iindex2 = self.removei(log(self.number_of_gen))
-            self.childs[iindex1], self.childs[iindex2] = c1,c2
+        #mutation
+        if randint(0,10)/10 < mutation_rate:
+            c1,c2 = self.mutation(c1), self.mutation(c2)
+        
+        iindex1, iindex2 = self.removei(log(self.number_of_gen))
+        self.childs[iindex1], self.childs[iindex2] = c1,c2
 
     def fit(self, epochs, view, verbose = 50, mutation_rate=0.1):
         i = 0
@@ -179,7 +177,7 @@ class geneticAl:
         return result, vmax, w, c
                 
 if __name__ == '__main__':
-    data = split_data('input/small_dataset.txt')
+    data = split_data('input/large_dataset.txt')
 
     with open('output/OUTPUT_'+str(data.len())+'.txt', 'w') as wf:
         for i in range(data.len()):
