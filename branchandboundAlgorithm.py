@@ -1,33 +1,38 @@
 import os, csv, string, sys, math, re, nltk
-import problem
+
 capacity = 0
 
 group = 0
 
 items = [] #weight, value, class, index
 
-def calculate_upper_bound(value, weight, index, items):
-	v = value
-	w = weight
-	for i in range(len(items)-index):
-		if (w+items[i+index][0] <= capacity):
-			w += items[i+index][0]
-			v -= items[i+index][1]
-		else:
-			v -= ((float)(capacity-w)/items[i+index][0])*items[i+index][1]
-			break
-	return v
+def input():
+	input_file = open("INPUT.txt", "r")
+	capacity = input_file.readline()
+	group = input_file.readline()
+	w = (input_file.readline()).split(",")
+	v = (input_file.readline()).split(",")
+	c = (input_file.readline()).split(",")
+	for i in range(len(w)):
+		item = []
+		item.append(int(w[i]))
+		item.append(int(v[i]))
+		item.append(int(c[i]))
+		items.append(item)
+	input_file.close()
 
-def calculate_lower_bound(value, weight, index, items):
-	v = value
-	w = weight
-	for i in range(len(items)-index):
-		if (w+items[i+index][0] <= capacity):
-			w += items[i+index][0]
-			v -= items[i+index][1]
-		else:
-			break
-	return v
+def output(value, path):
+	output_file.write(str(value))
+	result = [0]*len(items)
+	result_str = ""
+	for i in range(len(path)):
+		result[path[i]] = 1
+
+	for i in range(len(result)-1):
+		result_str += str(result[i]) + ", "
+	result_str += str(result[len(result)-1])
+
+	output_file.writelines(result_str)
 
 def checkWeight(items, path):
 	s = 0
@@ -58,8 +63,6 @@ def knapsack(items):
 	current_path = []
 	final_path = []
 	node = []
-	print(items)
-	#insert a dummy node
 	for i in range(len(items)):
 		node.append(i)
 
@@ -68,40 +71,25 @@ def knapsack(items):
 		last = current_path[len(current_path)-1]
 		for i in range(len(items)-last-1):
 			node.append(i+last+1)
-		print(node)
-		print(current_path)
 		if ((checkWeight(items, current_path) == False) ):
-			print(1)
 			while ((len(current_path)>0) and (len(node)>0) and (current_path[-1]<node[-1])):
 				node.pop()
 			while ((len(current_path)>0) and (len(node)>0) and (current_path[-1]>node[-1])):
 				current_path.pop()
 			continue
 		s=calculate_value(items, current_path)
-		print(s)
 		if ((s>final_bound) and (isSatisfied(items, current_path, group))):
 			final_path=[]
 			for i in range(len(current_path)):
 				final_path.append(current_path[i])
 			final_bound = s
-			print(final_path)
-			print(final_bound)
 		if (last==len(items)-1):
 			while ((len(current_path)>0) and (len(node)>0) and (current_path[-1]>node[-1])):
 				current_path.pop()
-	print(final_bound)
-	print(final_path)
+	output(final_bound,final_path)
 
 if __name__ == '__main__':
-	data = problem.split_data('input/INPUT_x.txt')
-	with open('output/OUTPUT_'+str(data.len())+'.txt', 'w') as wf:
-		for i in range(data.len()):
-			capacity = 15
-			group = 2
-			nproblem = problem.knapsack(data[i])
-			
-			for j in range(nproblem.len()):
-				d = nproblem[i]
-				items.append([d[2],d[1],d[0]])
-			
-			knapsack(items)
+	input()
+	output_file = open("OUTPUT.txt", "w")
+	knapsack(items)
+	output_file.close()
