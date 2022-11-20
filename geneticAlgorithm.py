@@ -193,7 +193,7 @@ if __name__ == '__main__':
             prob = knapsack(data=data[i])
             sol = geneticAl()
 
-            sol(init=100, problem=prob, epochs=10000, mutation_rate=0.85, verbose=5000, view = 1)
+            sol(init=100, problem=prob, epochs=5000, mutation_rate=0.85, verbose=100, view = 1)
             result, vmax, _, _ = sol.best_value()
             # plt.plot(plotx, ploty)
             # plt.ylabel('best value')
