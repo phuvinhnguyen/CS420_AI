@@ -39,7 +39,6 @@ def localBeam(init, weights,k):
             bestV = v
             result = sol
     
-    
     return bestV, result
 
 def top(sol_list):
