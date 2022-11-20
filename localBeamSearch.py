@@ -3,11 +3,8 @@ import numpy as np
 from random import randint
 
 
-weights = [85, 26, 48, 21, 22, 95, 43, 45, 55, 52]
-values = [79, 32, 47, 18, 26, 85, 33, 40, 45, 59]
-class_=[1, 1, 2, 1, 2, 1, 1, 2, 2, 2]
-MaxWeight = 101
-
+MaxWeight = 5
+k = 5
 # initial state will be [1,1,1,1,1,..,1] -> each item will have 1 so the total weight will be over the max weight can have
 # we reduce the number of item one by one (these are successors of initial state) randomly with heuristic : remove the lowest value first
 # after removed item until the weight is lower than max weight, we will check if we can add any small-weight item
@@ -76,4 +73,19 @@ def top(sol_list:list, t = 5):
 # print(localBeam(weights,5))
 # print(_init_state(weights))
 # print(calWeight(_init_state(weights),weights))
-print(localBeam([1,1,1,1,1,1,1,1,1,1],weights,5))
+# print(localBeam([1,1,1,1,1,1,1,1,1,1],weights,5))
+
+if __name__ == '__main__':
+    data = split_data('input/small_dataset.txt')
+
+    # with open('output/OUTPUT_'+str(data.len())+'.txt', 'w') as wf:
+    for i in range(data.len()):
+        prob = knapsack(data=data[i])
+        values = prob.v
+        weights = prob.w
+        init = []
+        for i in weights:
+           init.append(1) 
+        bestV, sol = localBeam(init,weights,k)
+        print(bestV)
+        print(sol)
