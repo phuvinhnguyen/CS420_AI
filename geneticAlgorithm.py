@@ -2,6 +2,11 @@ from random import randint
 import numpy as np
 from problem import knapsack, split_data
 from math import sqrt, log
+from matplotlib import pyplot as plt
+
+plotx = []
+ploty = []
+
 
 class geneticAl:
     def __init__(self):
@@ -127,9 +132,13 @@ class geneticAl:
                 if view == 0:
                     _, b, w, c = self.best_value()
                     print('epoch' ,i, ': v(', b,'), w(',w,'), c(',c,')')
+                    # plotx.append(i)
+                    # ploty.append(b)
                 elif view == 1:
                     scr, chi = self.best_score()
                     print('epoch ' ,i, ': s(', scr,')')
+                    # plotx.append(i)
+                    # ploty.append(scr)
             self.step(mutation_rate=mutation_rate)
             i += 1
 
@@ -177,15 +186,19 @@ class geneticAl:
         return result, vmax, w, c
                 
 if __name__ == '__main__':
-    data = split_data('input/test.txt')
+    data = split_data('input/large_dataset.txt')
 
     with open('output/OUTPUT_'+str(data.len())+'.txt', 'w') as wf:
         for i in range(data.len()):
             prob = knapsack(data=data[i])
             sol = geneticAl()
 
-            sol(init=100, problem=prob, epochs=10000, mutation_rate=0.85, verbose=1000, view = 1)
+            sol(init=100, problem=prob, epochs=10000, mutation_rate=0.85, verbose=5000, view = 1)
             result, vmax, _, _ = sol.best_value()
+            # plt.plot(plotx, ploty)
+            # plt.ylabel('best value')
+            # plt.xlabel('epochs')
+            # plt.show()
 
             print(vmax)
             result = str(result)

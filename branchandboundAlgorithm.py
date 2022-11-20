@@ -1,5 +1,5 @@
 import os, csv, string, sys, math, re, nltk
-
+import problem
 capacity = 0
 
 group = 0
@@ -93,12 +93,15 @@ def knapsack(items):
 	print(final_path)
 
 if __name__ == '__main__':
-	capacity = 15
-	group = 2
-	
-	
-	items.append([2, 10, 2])
-	items.append([4, 10, 2])
-	items.append([6, 12, 1])
-	items.append([9, 18, 2])
-	knapsack(items)
+	data = problem.split_data('input/INPUT_x.txt')
+	with open('output/OUTPUT_'+str(data.len())+'.txt', 'w') as wf:
+		for i in range(data.len()):
+			capacity = 15
+			group = 2
+			nproblem = problem.knapsack(data[i])
+			
+			for j in range(nproblem.len()):
+				d = nproblem[i]
+				items.append([d[2],d[1],d[0]])
+			
+			knapsack(items)
