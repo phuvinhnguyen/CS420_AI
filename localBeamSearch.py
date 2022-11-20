@@ -12,25 +12,41 @@ MaxWeight = 101
 # we reduce the number of item one by one (these are successors of initial state) randomly with heuristic : remove the lowest value first
 # after removed item until the weight is lower than max weight, we will check if we can add any small-weight item
 def _init_state(weights):
-    first_state = []
-    for i in range(0,len(weights)-1):
-        first_state.append(1)
+    first_state = [1]*len(weights)
     return first_state
 
-def localBeam(weights,k):
-    #first state : [1,1,..,1]
-    f = _init_state(weights)
-    #list of acceptable state
-    a = []
-    #reduce item in the init state in the descending order of value (heuristic)
-    while len(a) < k:
-        r = randint(0,len(f)-1)
-        if (f[r] == 1):
-            f[r] = 0
-            if(calWeight(f,weights) < MaxWeight): a.append(f)
+def localBeam(init, weights,k):
+    if 1 not in init:
+        return 0, None
 
+    #list of acceptable state
+    list_of_generate = []
+    #reduce item in the init state in the descending order of value (heuristic)
+    for i in range(len(init)):
+        if i == 0:
+            continue
+        x = init
+        x[i] = 0
+        list_of_generate.append(x)
+
+    keep_generate = top(list_of_generate)
+
+    bestV = 0
+    result = None
+    for i in keep_generate:
+        v, sol = localBeam(i, weights, k)
+        if v >= bestV:
+            bestV = v
+            result = sol
     
-    return a
+    
+    return bestV, result
+
+def top(sol_list):
+    return []
+
+def score(sol):
+    return 0
 
 # get value to compare the best value later
 def calValue(state,values):
