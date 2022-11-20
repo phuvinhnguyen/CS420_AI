@@ -11,9 +11,7 @@ MaxWeight = 101
 # initial state will be [1,1,1,1,1,..,1] -> each item will have 1 so the total weight will be over the max weight can have
 # we reduce the number of item one by one (these are successors of initial state) randomly with heuristic : remove the lowest value first
 # after removed item until the weight is lower than max weight, we will check if we can add any small-weight item
-def _init_state(weights):
-    first_state = [1]*len(weights)
-    return first_state
+    
 
 def localBeam(init, weights,k):
     if 1 not in init:
@@ -31,8 +29,12 @@ def localBeam(init, weights,k):
 
     keep_generate = top(list_of_generate)
 
+
     bestV = 0
     result = None
+    if valid(init) == True:
+        bestV = value(init)
+        result = init
     for i in keep_generate:
         v, sol = localBeam(i, weights, k)
         if v >= bestV:
@@ -41,32 +43,37 @@ def localBeam(init, weights,k):
     
     return bestV, result
 
-def top(sol_list):
+def valid(sol:list):
+    #return true if sol is valid
+    total_weight = 0
+    for i in range(0,len(sol)-1):
+        if(sol[i] == 1): total_weight += weights[i]
+    
+    
+    if(total_weight <= MaxWeight): return True
+    else: return False
+    
+
+def value(sol:list):
+    #return value of sol
+    total_value = 0
+    for i in range(0,len(sol)-1):
+        if(sol[i] == 1): total_value += values[i]
+    return total_value
+
+def top(sol_list:list, t = 5):
+    #return top t solutions of the sol list(best solutions)
+    list_value = []
+    for i in sol_list:
+        list_value.append(value(i))
     return []
 
-def score(sol):
-    return 0
+# def score(sol):
+#     #calculate score to use in select top in top function
+#     return 0
 
-# get value to compare the best value later
-def calValue(state,values):
-    total = 0
-    for i in range(0,len(state)):
-        if(state[i] == 1): total += values[i]
-    return total
 
-# get weight to check current weight is lower than max weight
-def calWeight(state,weights):
-    cur_weight = 0
-    for i in range(0,len(state)):
-        if(state[i] == 1): cur_weight += weights[i]
-    return cur_weight
-
-#check if can add more value if the current state weight is lower than max weight
-def checkAdd(state):
-    for s in state:
-        if s == 0:
-            s = 1
-            if (calWeight(state,weights) < MaxWeight): break
-            else: s = 0
-
-print(localBeam(weights,5))
+# print(localBeam(weights,5))
+# print(_init_state(weights))
+# print(calWeight(_init_state(weights),weights))
+print(localBeam([1,1,1,1,1,1,1,1,1,1],weights,5))
