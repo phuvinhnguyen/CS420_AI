@@ -16,6 +16,26 @@ def _init_state(weights):
     for i in range(0,len(weights)-1):
         first_state.append(1)
     return first_state
+
 def localBeam(weights):
     sol = _init_state(weights)
+    #reduce item in the init state in the descending order of value (heuristic)
+    
+    
+    
     return sol
+
+# get value to compare the best value later
+def calValue(state,values):
+    total = 0
+    for i in range(0,len(state)):
+        if(state[i] == 1): total += values[i]
+    return total
+
+# get weight to check current weight is lower than max weight
+def calWeight(state,weights):
+    cur_weight = 0
+    for i in range(0,len(state)):
+        if(state[i] == 1): cur_weight += weights[i]
+    return cur_weight
+    
