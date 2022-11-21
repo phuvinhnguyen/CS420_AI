@@ -1,16 +1,18 @@
 from problem import knapsack, split_data
 import numpy as np
 from random import randint
+import sys
+sys.setrecursionlimit(1000)
 
 
-
-k = 3
+k = 2
 # initial state will be [1,1,1,1,1,..,1] -> each item will have 1 so the total weight will be over the max weight can have
 # we reduce the number of item one by one (these are successors of initial state) randomly with heuristic : remove the lowest value first
 # after removed item until the weight is lower than max weight, we will check if we can add any small-weight item
     
 
 def localBeam(init, weights,k):
+    if valid(init): return 0, None
     if 1 not in init:
         return 0, None
 
@@ -20,10 +22,10 @@ def localBeam(init, weights,k):
     for i in range(len(init)):
         if i == 0:
             continue
-        x = init
+        x = init.copy()
         x[i] = 0
         list_of_generate.append(x)
-
+    # print(list_of_generate)
     keep_generate = top(list_of_generate,k)
 
 
@@ -31,7 +33,8 @@ def localBeam(init, weights,k):
     result = None
     if valid(init) == True:
         bestV = value(init)
-        result = init
+        result = init 
+        
     for i in keep_generate:
         v, sol = localBeam(i, weights, k)
         if v >= bestV:
@@ -45,7 +48,7 @@ def valid(sol:list):
     total_weight = 0
     for i in range(0,len(sol)-1):
         if(sol[i] == 1): total_weight += int(weights[i])
-    
+        else: continue
     
     if(total_weight <= MaxWeight): return True
     else: return False
@@ -89,15 +92,14 @@ if __name__ == '__main__':
 
     with open('output/OUTPUT_'+str(data.len())+'.txt', 'w') as wf:
         for i in range(data.len()):
-            prob = knapsack(data=data[i])
+            prob = knapsack(data=data[0])
             values = prob.v
             weights = prob.w
+            classes = prob.c
             MaxWeight = int(prob.getMaxWeight())
             init = []
             for i in range(0,len(weights)-1):
                 init.append(1)
-            print(init)
-            print(type(init))
             bestV, sol = localBeam(init,weights,k)
             print(bestV)
             print(sol)
