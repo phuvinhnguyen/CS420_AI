@@ -82,7 +82,7 @@ def top(sol_list:list, t = 5):
     #return top t solutions of the sol list(best solutions)
     list_value = []
     for i in sol_list:
-        list_value.append(value(i))
+        list_value.append(score(i))
     tmp = list_value.copy()
 
     indexs = sorted(range(len(tmp)), key=lambda i: tmp[i])[-t:]
@@ -93,14 +93,13 @@ def top(sol_list:list, t = 5):
     for i in indexs:
          index.append(sol_list[i])
 
-    # res = []
-    # for i in range(0,t-1):
-    #     res.append(sol_list[index[i]])
     return index
 
-# def score(sol):
-#     #calculate score to use in select top in top function
-#     return 0
+def score(sol):
+    #calculate score to use in select top in top function
+    if fullClass(sol) == False:
+        return 0
+    return value(sol)
 
 
 # print(localBeam(weights,5))
@@ -109,7 +108,7 @@ def top(sol_list:list, t = 5):
 # print(localBeam([1,1,1,1,1,1,1,1,1,1],weights,5))
 
 if __name__ == '__main__':
-    data = split_data('input/small_dataset.txt')
+    data = split_data('input/large_dataset.txt')
 
     with open('output/OUTPUT_'+str(data.len())+'.txt', 'w') as wf:
         for i in range(data.len()):
@@ -124,5 +123,5 @@ if __name__ == '__main__':
                 init.append(1)
             bestV, sol = localBeam(init,weights,k)
             print(bestV)
-            print(sol)
+            print(str(sol)[1:-1])
    

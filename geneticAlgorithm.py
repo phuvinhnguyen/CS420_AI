@@ -186,14 +186,14 @@ class geneticAl:
         return result, vmax, w, c
                 
 if __name__ == '__main__':
-    data = split_data('input/large_dataset.txt')
+    data = split_data('input/small_dataset.txt')
 
     with open('output/OUTPUT_'+str(data.len())+'.txt', 'w') as wf:
         for i in range(data.len()):
             prob = knapsack(data=data[i])
             sol = geneticAl()
 
-            sol(init=100, problem=prob, epochs=5000, mutation_rate=0.85, verbose=100, view = 1)
+            sol(init=10, problem=prob, epochs=50, mutation_rate=0.85, verbose=100, view = 1)
             result, vmax, _, _ = sol.best_value()
             # plt.plot(plotx, ploty)
             # plt.ylabel('best value')
