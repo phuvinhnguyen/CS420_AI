@@ -7,9 +7,11 @@ group = 0
 items = [] #weight, value, class, index
 
 def input():
-	input_file = open("INPUT.txt", "r")
-	capacity = input_file.readline()
-	group = input_file.readline()
+	global capacity
+	global group
+	input_file = open("input/INPUT_x.txt", "r")
+	capacity = int(input_file.readline())
+	group = int(input_file.readline())
 	w = (input_file.readline()).split(",")
 	v = (input_file.readline()).split(",")
 	c = (input_file.readline()).split(",")
@@ -22,7 +24,7 @@ def input():
 	input_file.close()
 
 def output(value, path):
-	output_file.write(str(value))
+	output_file.write(str(value)+'\n')
 	result = [0]*len(items)
 	result_str = ""
 	for i in range(len(path)):
@@ -90,6 +92,6 @@ def knapsack(items):
 
 if __name__ == '__main__':
 	input()
-	output_file = open("OUTPUT.txt", "w")
+	output_file = open("output/OUTPUT.txt", "w")
 	knapsack(items)
 	output_file.close()

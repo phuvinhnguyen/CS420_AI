@@ -26,9 +26,9 @@ def localBeam(init, weights,k):
         x = init
         x[i] = 0
         list_of_generate.append(x)
+        break
 
     keep_generate = top(list_of_generate)
-
 
     bestV = 0
     result = None
