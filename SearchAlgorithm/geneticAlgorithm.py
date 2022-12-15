@@ -1,8 +1,7 @@
-from random import randint
+from random import randint, choice
 import numpy as np
 from problem import knapsack, split_data
 from math import sqrt, log
-from matplotlib import pyplot as plt
 
 plotx = []
 ploty = []
@@ -64,12 +63,23 @@ class geneticAl:
                 if j[0] in _c:
                     _c.remove(j[0])
         
+        # score__ = 0
+        # if len(_c) > 0:
+        #     score__ = -self.problem.getMaxWeight() * len(_c) * 0.5
+        # if _w > self.problem.getMaxWeight():
+        #     score__ = score__ - _w + self.problem.getMaxWeight()
+        #     return _v*0.5 + score__
+        
+        # return _v *(1-max(0, _w - self.problem.getMaxWeight())-len(_c))
+
         if _w > self.problem.getMaxWeight():
             return _v/(sqrt(_w-self.problem.getMaxWeight())+len(_c)*len(_c) + 1)
         elif len(_c) > 0:
             return _v/(len(_c) * len(_c) + 1)
 
         return _v
+
+        
 
     def selection(self, turns = 6):
         i=0
@@ -114,16 +124,20 @@ class geneticAl:
         return iindex1, iindex2
 
     def step(self, mutation_rate=0.1):
-        p1, p2 = self.selection(log(self.number_of_gen))
-        #crossover
-        c1,c2 = self.crossover(p1,p2)
+        next_gen = []
+        for _ in range(0, self.number_of_gen, 2):
+            p1, p2 = self.selection(log(self.number_of_gen + 1))
+            #crossover
+            c1, c2 = self.crossover(p1,p2)
 
-        #mutation
-        if randint(0,10)/10 < mutation_rate:
-            c1,c2 = self.mutation(c1), self.mutation(c2)
-        
-        iindex1, iindex2 = self.removei(log(self.number_of_gen))
-        self.childs[iindex1], self.childs[iindex2] = c1,c2
+            #mutation
+            if randint(0,10)/10 < mutation_rate:
+                c1,c2 = self.mutation(c1), self.mutation(c2)
+            
+            next_gen.append(c1)
+            next_gen.append(c2)
+
+        self.childs = next_gen
 
     def fit(self, epochs, view, verbose = 50, mutation_rate=0.1):
         i = 0
@@ -142,10 +156,10 @@ class geneticAl:
             self.step(mutation_rate=mutation_rate)
             i += 1
 
-    def __call__(self, problem:knapsack, init = 1000, epochs = 1000, verbose = 100, view = 0, mutation_rate = 0.1) -> None:
+    def __call__(self, problem:knapsack, init = 1000, epochs = 1000, step_report = 100, view = 0, mutation_rate = 0.1) -> None:
         self.extract_neccessary_data(problem=problem)
         self.initialize(init)
-        self.fit(epochs=epochs, mutation_rate=mutation_rate, verbose=verbose, view = view)
+        self.fit(epochs=epochs, mutation_rate=mutation_rate, verbose=step_report, view = view)
 
     def print(self):
         print('___________________________________________')
@@ -184,21 +198,17 @@ class geneticAl:
                 c = len(_c)
         
         return result, vmax, w, c
-                
-if __name__ == '__main__':
-    data = split_data('input/small_dataset.txt')
 
-    with open('output/OUTPUT_'+str(data.len())+'.txt', 'w') as wf:
+if __name__ == '__main__':
+    data = split_data('input/large_dataset.txt')
+
+    with open('t_OUTPUT_'+str(data.len())+'.txt', 'w') as wf:
         for i in range(data.len()):
             prob = knapsack(data=data[i])
             sol = geneticAl()
 
-            sol(init=10, problem=prob, epochs=50, mutation_rate=0.85, verbose=100, view = 1)
+            sol(init=10, problem=prob, epochs=5000, mutation_rate=0.1, step_report=100, view = 0)
             result, vmax, _, _ = sol.best_value()
-            # plt.plot(plotx, ploty)
-            # plt.ylabel('best value')
-            # plt.xlabel('epochs')
-            # plt.show()
 
             print(vmax)
             result = str(result)
