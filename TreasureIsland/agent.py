@@ -18,7 +18,9 @@ tile anywhere on the map EXCEPT tiles with label ”0”, and
 wins the game. -> WIN.
 '''
     #MAIN FUNCTIONALITIES
-    def __init__(self, init_place:tuple(int, int)):
+    def __init__(self, init_place:list(int, int), map_size:list(int, int)):
+        self.pos = init_place[:]
+        self.mask = [['']*map_size[0] for _ in range(map_size[1])]
         pass
     def step(self, info):
         pass

@@ -78,6 +78,3 @@ o r = 0 is sea.
 
     def map(self):
         return self.mmap
-
-a = nmap('input/a.txt')
-print(a.map())

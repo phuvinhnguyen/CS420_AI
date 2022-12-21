@@ -14,15 +14,40 @@ tile, the agent loses the game. -> LOSE
 '''
     #HINT:
     '''
+NOTE:
+CMD IS THE INDEX OF THE HINT. EX: GIVE A HINT OF TYPE 1 => CMD=1
+VERIFY: BOOLEAN, IF THAT HINT IS TRUE THEN VERIFY=TRUE, ELSE FALSE
+X IS HORIZONTAL, Y IS VERTICAL
+
 1. A list of random tiles that doesn't contain the treasure (1 to 12).
+TODO: RETURN A LIST -> [CMD, VERIFY, [LIST OF RANDOM TILES]]
+EACH RANDOM TILE: [X,Y]
+
 2. 2-5 regions that 1 of them has the treasure.
+TODO: [CMD, VERIFY, [REGIONS]]
+REGION: 0,1,2,3,... CAN GET FROM MAP
+
 3. 1-3 regions that do not contain the treasure.
+TODO: [CMD, VERIFY, [REGIONS]]
+REGION: 0,1,2,3,... CAN GET FROM MAP
+
 4. A large rectangle area that has the treasure.
+TODO: [CMD, VERIFY, [UPLEFT_X, UPLEFT_Y, DOWNRIGHT_X, DOWNRIGHT_Y]]
+
 5. A small rectangle area that doesn't has the treasure.
+TODO: [CMD, VERIFY, [UPLEFT_X, UPLEFT_Y, DOWNRIGHT_X, DOWNRIGHT_Y]]
+
 6. He tells you that you are the nearest person to the treasure (between
 you and the prison he is staying).
+TODO: [CMD, VERIFY]
+
 7. A column and/or a row that contain the treasure (rare).
+TODO: [CMD, VERIFY, [ROW_INDEX, COLLUMN_INDEX]]
+IF ROW_INDEX OR COLLUMN_INDEX IS -1 THEN THAT ROW, COLLUMN IS NOT CONSIDER(HOWEVER, AT LEAST ONE OF THEM != -1)
+
 8. A column and/or a row that do not contain the treasure.
+
+
 9. 2 regions that the treasure is somewhere in their boundary.
 10.The treasure is somewhere in a boundary of 2 regions.
 11.The treasure is somewhere in an area bounded by 2-3 tiles from sea.
