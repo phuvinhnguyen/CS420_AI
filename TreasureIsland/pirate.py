@@ -20,7 +20,7 @@ VERIFY: BOOLEAN, IF THAT HINT IS TRUE THEN VERIFY=TRUE, ELSE FALSE
 X IS HORIZONTAL, Y IS VERTICAL
 
 1. A list of random tiles that doesn't contain the treasure (1 to 12).
-TODO: RETURN A LIST -> [CMD, VERIFY, [LIST OF RANDOM TILES]]
+TODO: RETURN A LIST -> [CMD, VERIFY, [[LIST OF RANDOM TILES_X],[LIST OF RANDOM TILES_Y]]]
 EACH RANDOM TILE: [X,Y]
 
 2. 2-5 regions that 1 of them has the treasure.
