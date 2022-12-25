@@ -1,3 +1,6 @@
+import random
+from map_generation import nmap
+
 class pirate:
     #RULE
     '''
@@ -60,12 +63,111 @@ bigger one, the treasure is somewhere inside the gap between 2
 squares. (rare)
 15.The treasure is in a region that has mountain
 '''
+    def type1(m,n):
+        verify = True
+        s =  random.randint(1, 12)
+        tileList = []
+        for i in range(s):
+            xs=random.randint(0,n)
+            ys=random.randint(0,m)
+            if (xs == tx and ys == ty):
+                verify = False
+            if [xs, ys] not in tileList:
+                tileList.append([xs, ys])
+            else:
+                i = i - 1
+        return [1,verify,tileList]
+
+    '''2. 2-5 regions that 1 of them has the treasure.
+    TODO: [CMD, VERIFY, [REGIONS]]
+    REGION: 0,1,2,3,... CAN GET FROM MAP'''
+    def type2(m,n):
+        s = min(random.randint(2,5),r)
+        regionList = []
+        while (len(regionList)<s):
+            x=random.randint(0,r-1);
+            if x not in regionList:
+                regionList.append(x)
+        t = map[tx][ty].replace('T','')
+        if (int(t) in regionList):
+            return [2, True, regionList]
+        else:
+            return [2, False, regionList]
+
+    def type3(m,n):
+        s = min(random.randint(1,3),r)
+        regionList = []
+        while (len(regionList)<s):
+            x=random.randint(0,r-1);
+            if x not in regionList:
+                regionList.append(x)
+        t = map[tx][ty].replace('T','')
+        if (int(t) in regionList):
+            return [2, False, regionList]
+        else:
+            return [2, True, regionList]
+
+    for i in range(5):
+        print(type3(m,n))     
+
+    def type4(m,n):
+        l=int(random.randint(0,n))+1
+        w=int(random.randint(0,m))+1
+    
+        xs=random.randint(0,n)
+        ys=random.randint(0,m)
+        xe=min(xs+l,n)
+        ye=min(ys+w,m)
+        
+        for i in range(ys,ye+1):
+            for j in range(xs,xe+1):
+                if (map[i][j].find("T")!=-1):
+                    return [4,True,[xs,ys,xe,ye]]
+        return [4,False,[xs,ys,xe,ye]]
+
+    def type5(m,n):
+        l=int(random.randint(0,n)*0.3)+1
+        w=int(random.randint(0,m)*0.3)+1
+    
+        xs=random.randint(0,n)
+        ys=random.randint(0,m)
+        xe=min(xs+l,n)
+        ye=min(ys+w,m)
+        
+        for i in range(ys,ye+1):
+            for j in range(xs,xe+1):
+                if (map[i][j].find("T")!=-1):
+                    return [5,False,[xs,ys,xe,ye]]
+        return [5,True,[xs,ys,xe,ye]]
+
+    def type7(m,n):
+        r=-1
+        c=-1
+        while ((r==-1) and (c==-1)):
+            r=random.randint(-1,m)
+            c=random.randint(-1,n)
+        
+        if (r==-1):
+            for i in range(0,m+1):
+                if (map[i][c].find("T")>-1):
+                    return [7, True, [-1,c]]
+            return [7, False, [-1,c]]
+            
+        if (c==-1):
+            for i in range(0,n+1):
+                if (map[r][i].find("T")>-1):
+                    return [7, True, [r,-1]]
+            return [7, False, [r,-1]]
+        
+        return [7,map[r][c].find("T")>-1,[r,c]]
+
+
     #MAIN FUNCTIONALITIES
-    def __init__(self, count_down: int):
-        self.count_down = count_down
+    def __init__(self, mmap:nmap):
+        self.map = mmap
+        #choose randomly a position of prison and set it as init position of pirate 
         pass
     def hint(self):
-        self.count_down -= 1
         pass
     def report(self):
         #report present position

@@ -7,17 +7,17 @@ class var:
         tr: true->input is pos of treasure
         '''
         if tr:
-            self.mask = np.zeros((size[1],size[0]))
+            self.mask = np.zeros((size[1],size[0]), dtype=np.int0)
             self.mask[x_no, y_no] = 1
         else:
-            self.mask = np.ones((size[1],size[0]))
+            self.mask = np.ones((size[1],size[0]), dtype=np.int0)
             self.mask[x_no, y_no] = 0
     def __mul__(self, x):
-        re = var([0][0],1,(1,1))
+        re = var((1,1))
         re.mask = self.mask&x.mask
         return re
     def __add__(self, x):
-        re = var([0][0],1,(1,1))
+        re = var((1,1))
         re.mask = self.mask|x.mask
         return re
 
@@ -43,51 +43,96 @@ wins the game. -> WIN.
 '''
     #MAIN FUNCTIONALITIES
     def __init__(self, init_place:list, map_size:list, map:nmap):
-        self.pos = init_place[:]
+        self.pos = init_place
         self.mask = var(map_size)
         self.map = map
         self.logic = []
+        self.pirate_pos = [-map_size,-map_size]
         self.mapsize = map_size
     def step(self, map, info):
+        
         pass
     def scan(self, map, pos:list, typ:str):
         pass
     def solveI(self, input):
         match input[0]:
             case 1: #1. A list of random tiles that doesn't contain the treasure (1 to 12).
-                print([x for x in input[2][:][0]])
-                bmap = var(self.mapsize, [x for x in input[2][:][0]],[y for y in input[2][:][1]], not input[1])
+                bmap = var(self.mapsize, [x for x in input[2][0]],[y for y in input[2][1]], not input[1])
                 self.mask = self.mask*bmap
             case 2: #2. 2-5 regions that 1 of them has the treasure.
                 bmap = var(self.mapsize,[],[],1)
                 for i in input[2]:
                     bmap = bmap + var(self.mapsize, self.map.region[i][0], self.map.region[i][1], input[1])
                 self.mask = self.mask*bmap  
-            case 3:
+            case 3: #3. 1-3 regions that do not contain the treasure.
+                bmap = var(self.mapsize,[],[],1)
+                for i in input[2]:
+                    bmap = bmap + var(self.mapsize, self.map.region[i][0], self.map.region[i][1], not input[1])
+                self.mask = self.mask*bmap 
+            case 4: #4. A large rectangle area that has the treasure.
+                bmap
                 if input[1]:
-                    pass
+                    bmap = var(self.mapsize,[],[],1)
+                    bmap.mask[input[1]:input[3]+1,input[0]:input[2]] = 1
                 else:
-                    pass
-            case 4:
-                if input[1]:
-                    pass
+                    bmap = var(self.mapsize,[],[],0)
+                    bmap.mask[input[1]:input[3]+1,input[0]:input[2]] = 0
+                self.mask = self.mask*bmap
+            case 5: #5. A small rectangle area that doesn't has the treasure.
+                bmap
+                if not input[1]:
+                    bmap = var(self.mapsize,[],[],1)
+                    bmap.mask[input[2][1]:input[2][3]+1,input[2][0]:input[2][2]] = 1
                 else:
-                    pass
-            case 5:
-                if input[1]:
-                    pass
+                    bmap = var(self.mapsize,[],[],0)
+                    bmap.mask[input[2][1]:input[2][3]+1,input[2][0]:input[2][2]] = 0
+                self.mask = self.mask*bmap
+            case 6: #6. He tells you that you are the nearest person to the treasure (between you and the prison he is staying).
+                x_ = -self.pirate_pos[1]+self.pos[1]
+                y_ = self.pirate_pos[0]-self.pos[0]
+                r_ = (x_*(self.pirate_pos[0]+self.pos[0])+y_*(self.pirate_pos[1]+self.pos[1]))/2
+                bmap
+
+                if x_ == 0 and y_ == 0:
+                    return
+                elif x_ == 0:
+                    bmap = var(self.mapsize,[],[],1)
+                    y = int(r_/y_)
+                    if self.pos[1]-y > 0:
+                        bmap.mask[y:,:] = 1
+                    else:
+                        bmap.mask[0:y+1,:] = 1
+                elif y_ == 0:
+                    bmap = var(self.mapsize,[],[],1)
+                    x = int(r_/x_)
+                    if self.pos[1]-x > 0:
+                        bmap.mask[x:,:] = 1
+                    else:
+                        bmap.mask[0:x+1,:] = 1
                 else:
-                    pass
-            case 6:
-                if input[1]:
-                    pass
+                    bmap = var(self.mapsize,[],[],1)
+                    for x in range(self.mapsize[1]):
+                        y = int((r_ - x*x_)/y_)
+                        bmap.mask[y:,x] = 1
+                    if bmap.mask[self.pos[1], self.pos[0]] == 0:
+                        bmap.mask = 1 - bmap.mask
+                
+                if not input[1]:
+                    bmap.mask = 1 - bmap.mask
+                self.mask = self.mask*bmap
+            case 7: #7. A column and/or a row that contain the treasure (rare).
+                bmap
+                if input[2][0] == -1:
+                    bmap = var(self.mapsize,[],[],1)
+                    bmap.mask[:,input[2][1]] = 1
+                elif input[2][1] == -1:
+                    bmap = var(self.mapsize,[],[],1)
+                    bmap.mask[input[2][0],:] = 1
                 else:
-                    pass
-            case 7:
-                if input[1]:
-                    pass
-                else:
-                    pass
+                    bmap = var(self.mapsize,[],[],1)
+                    bmap.mask[input[2][0],input[2][1]] = 1
+                bmap.mask = 1-bmap.mask if not input[1] else bmap
+                self.mask = self.mask*bmap
             case 8:
                 if input[1]:
                     pass
@@ -128,7 +173,6 @@ wins the game. -> WIN.
                     pass
                 else:
                     pass
-        pass
     def report(self):
         pass
 
@@ -246,5 +290,6 @@ wins the game. -> WIN.
 if __name__ == '__main__':
     mmap = nmap('input/a.txt')
     a = agentkm((0,0),(8,8),mmap)
-    a.solveI([1,True,[[1,2],[3,2],[6,5]]])
+    a.solveI([1,True,[[1,2,4],[3,5,2]]])
+    a.solveI([1,False,[[1,3,6,5,6],[3,2,3,5,2]]])
     print(a.mask.mask)
