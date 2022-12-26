@@ -48,39 +48,31 @@ TODO: [CMD, VERIFY]
 TODO: [CMD, VERIFY, [ROW_INDEX, COLLUMN_INDEX]]
 IF ROW_INDEX OR COLLUMN_INDEX IS -1 THEN THAT ROW, COLLUMN IS NOT CONSIDER(HOWEVER, AT LEAST ONE OF THEM != -1)
 
-7. A column and/or a row that contain the treasure (rare).
-TODO: [CMD, VERIFY, [ROW_INDEX, COLLUMN_INDEX]]
-IF ROW_INDEX OR COLLUMN_INDEX IS -1 THEN THAT ROW, COLLUMN IS NOT CONSIDER(HOWEVER, AT LEAST ONE OF THEM != -1)
-
 8. A column and/or a row that do not contain the treasure.
 TODO: [CMD, VERIFY, [ROW_INDEX, COLLUMN_INDEX]]
 
-
 9. 2 regions that the treasure is somewhere in their boundary.
-TODO: [CMD, VERIFY, [REGION 1, REGION 2]]
-
+TODO: [CMD, VERIFY, [REGIONS]]
 
 10.The treasure is somewhere in a boundary of 2 regions.
-TODO: [CMD, VERIFY, [REGION 1, REGION 2]]
+TODO: [CMD, VERIFY]
 
 11.The treasure is somewhere in an area bounded by 2-3 tiles from sea.
-TODO: [CMD, VERIFY, REGION]
+TODO: [CMD, VERIFY, No OF TILES]
 
 12.A half of the map without treasure (rare).
-TODO: [CMD, VERIFY, [UPLEFT_X, UPLEFT_Y, DOWNRIGHT_X, DOWNRIGHT_Y]]
+TODO: [CMD, VERIFY, PART]
+PART IN {UP, DOWN, LEFT, RIGHT}
 
 13.From the center of the map/from the prison that he's staying, he tells
 you a direction that has the treasure (W, E, N, S or SE, SW, NE, NW)
+TODO: [CMD, VERIFY, PART]
+PART IN 
 (The shape of area when the hints are either W, E, N or S is triangle).
-TODO: [CMD, VERIFY, DIRECTION]
-
 14.2 squares that are different in size, the small one is placed inside the
 bigger one, the treasure is somewhere inside the gap between 2
 squares. (rare)
-[CMD, VERIFY, [BIG SQUARE[UPLEFT_X, UPLEFT_Y, DOWNRIGHT_X, DOWNRIGHT_Y], SMALL SQUARE[UPLEFT_X, UPLEFT_Y, DOWNRIGHT_X, DOWNRIGHT_Y]]]
-
 15.The treasure is in a region that has mountain
-TODO: [CMD, VERIFY, REGION]
 '''
     def type1(m,n):
         verify = True
