@@ -1,5 +1,6 @@
 import numpy as np
 from map_generation import nmap
+from Astart import a_star_graph_search
 
 class var:
     def __init__(self, size:list, x_no:list=[], y_no:list=[], tr: bool=False) -> None:
@@ -41,19 +42,86 @@ tile anywhere on the map EXCEPT tiles with label ”0”, and
 • If the agent scans an area containing the treasure, the agent
 wins the game. -> WIN.
 '''
+    def get_goal_function(self, des):
+        def dest(cell):
+            return cell == des
+        return dest
+    def get_successor_function(self, grid):
+        def get_clear_adjacent_cells(cell):
+            i, j = cell
+            return (
+                (i + a, j + b)
+                for a in (-1, 0, 1)
+                for b in (-1, 0, 1)
+                if a != 0 or b != 0
+                if 0 <= i + a < len(grid)
+                if 0 <= j + b < len(grid[0])
+                if grid[i + a][j + b] == 0
+            )
+        return get_clear_adjacent_cells
+    def get_heuristic(self, grid, des):
+        M, N = len(grid), len(grid[0])
+        (a, b) = des
+        def get_clear_path_distance_from_goal(cell):
+            (i, j) = cell
+            return max(abs(a - i), abs(b - j))
+        return get_clear_path_distance_from_goal
+
     #MAIN FUNCTIONALITIES
     def __init__(self, init_place:list, map_size:list, map:nmap):
-        self.pos = init_place
+        self.pos = init_place #[x,y]
         self.mask = var(map_size)
+        self.tele = True
         self.map = map
         self.logic = []
         self.pirate_pos = [-map_size,-map_size]
         self.mapsize = map_size
-    def step(self, map, info):
+        self.grid = [[1 if 'M' in x else 0 for x in y] for y in map.mmap]
+    
+    
+    def score(self, size=1):
+        return np.array([np.sum(self.mask[max(0,i-size):min(self.mapsizep[1],i+size+1),max(0,j-size):min(self.mapsizep[0],j+size+1)]) for i in range(self.mapsize[1]) for j in range(self.mapsize[0])]).reshape((self.mapsize[1],self.mapsize[0]))
+    
+    
+    def step(self, input):
+        self.solveI(input)
+        m = self.score()
+        #find des
+        des = np.where(m == np.max(m))
+        des = (des[0][0],des[1][0])
+        #find path to des
+        path = a_star_graph_search(self.pos,
+                                    goal_function=self.get_goal_function(des),
+                                    successor_function=self.get_successor_function(self.grid),
+                                    heuristic= self.get_heuristic(self.grid, des))[:5]
+
+        if path == None:
+            if self.tele == True:
+                self.tele == False
+                self.pos = des
+            self.scan(len(path))
+            return
+        for i in path:
+            self.mask.mask[i[1],i[0]] = 1 if 'T' in self.map.mmap[i[1]][i[0]] else 0
+        self.scan(len(path))
+
+
+    def scan(self, typ:int):
+        xb,xe,yb,ye
+        if typ == 0:
+            xb,xe = max(0,self.pos[0]-2),min(self.pos[0]+3,self.mapsize[0])
+            yb,ye = max(self.pos[1]-2,0),min(self.pos[1]+3,self.mapsize[1])
+        elif typ <= 2:
+            xb,xe = max(0,self.pos[0]-1),min(self.pos[0]+2,self.mapsize[0])
+            yb,ye = max(self.pos[1]-1,0),min(self.pos[1]+2,self.mapsize[1])
+        elif typ <= 4:
+            return
         
-        pass
-    def scan(self, map, pos:list, typ:str):
-        pass
+        for x in range(xb,xe):
+            for y in range(yb,ye):
+                self.mask.mask[y,x] = 1 if 'T' in self.map.mmap[y][x] else 0
+
+        
     def solveI(self, input):
         match input[0]:
             case 1: #1. A list of random tiles that doesn't contain the treasure (1 to 12).
@@ -173,6 +241,8 @@ wins the game. -> WIN.
                     pass
                 else:
                     pass
+    
+    
     def report(self):
         pass
 
