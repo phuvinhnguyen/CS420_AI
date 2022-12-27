@@ -112,5 +112,5 @@ def get_heuristic(grid):
     return get_clear_path_distance_from_goal
 
 if __name__ == '__main__':
-    m = [[0,0,1],[0,1,1],[0,0,0]]
+    m = [[0,0,1],[0,1,1],[0,1,0]]
     print(a_star_graph_search(start=(0,0), successor_function=get_successor_function(m),goal_function=get_goal_function(m),heuristic=get_heuristic(m)))
