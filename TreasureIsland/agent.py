@@ -83,12 +83,15 @@ wins the game. -> WIN.
     def score(self, size=1):
         result = np.zeros(self.mapsize)
 
-        for x in range(len(self.mask)):
-            for y in range(len(self.mask[0])):
+        for x in range(len(self.mask.mask)):
+            for y in range(len(self.mask.mask[0])):
                 if '0' in self.map.mmap[x][y] or 'M' in self.map.mmap[x][y]:
                     result[x,y] = 0
                 else:
-                    result[x,y] = 1        
+                    inner = np.sum([self.mask.mask[i,j] for i in range(max(0,x-1),min(x+2, self.mapsize[0])) for j in range(max(0,y-1),min(y+2, self.mapsize[1]))])
+                    outer = 0
+                    distance = abs(x-self.pos[0] + y-self.pos[1])
+                    result[x,y] = self.mapsize[0] + self.mapsize[1] + inner - outer - distance
 
         return result#np.array([np.sum(self.mask[max(0,i-size):min(self.mapsize[1],i+size+1),max(0,j-size):min(self.mapsize[0],j+size+1)]) for i in range(self.mapsize[1]) for j in range(self.mapsize[0])]).reshape((self.mapsize[1],self.mapsize[0]))
     
@@ -265,6 +268,6 @@ wins the game. -> WIN.
 if __name__ == '__main__':
     mmap = nmap('input/a.txt')
     a = agentkm((0,2),mmap)
-    a.step([1,1,[[1,2,3],[5,4,1]]])
-    a.step([1,1,[[1,2,3],[5,4,1]]])
-    print(a.mask.mask,a.pos)
+    for _ in range(10):
+        a.step([1,1,[[1,2,3],[5,4,1]]])
+        print(a.mask.mask,a.pos)
