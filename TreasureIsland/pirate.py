@@ -69,10 +69,16 @@ you a direction that has the treasure (W, E, N, S or SE, SW, NE, NW)
 TODO: [CMD, VERIFY, PART]
 PART IN 
 (The shape of area when the hints are either W, E, N or S is triangle).
+
 14.2 squares that are different in size, the small one is placed inside the
 bigger one, the treasure is somewhere inside the gap between 2
 squares. (rare)
+TODO: [CMD, VERIFY, [SMALL_UPLEFT, SMALL_DOWNRIGHT], [LARGE_UPLEFT, LARGE_DOWNRIGHT]]
+SMALL_UPLEFT: [X,Y]
+SMALL_DOWNRIGHT: [X,Y]...
+
 15.The treasure is in a region that has mountain
+TODO: [CMD, VERIFY]
 '''
     map = [["0","0","4","4","4"],["0","1T","4M","4","4"],["1","1M","3M","3","5"],["2","1","1","3","5"],["2","2","0","3","5"]]
     m=len(map)-1

@@ -39,8 +39,8 @@ o r = 0 is sea.
                 x_axis = 0
                 for tile in l:
                     reg = int(re.findall(mask, tile)[0])
-                    self.region[reg][0].append(x_axis)
-                    self.region[reg][1].append(y_axis)
+                    self.region[reg][1].append(x_axis)
+                    self.region[reg][0].append(y_axis)
                     if 'M' in tile:
                         self.M[0].append(x_axis)
                         self.M[1].append(y_axis)
