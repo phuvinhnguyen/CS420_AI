@@ -166,7 +166,7 @@ wins the game. -> WIN.
             case 1: #1. A list of random tiles that doesn't contain the treasure (1 to 12)->DONE
                 bmap = var(self.mapsize, [x for x in input[2][0]],[y for y in input[2][1]], not input[1])
                 self.mask = self.mask*bmap
-            case 2: #2. 2-5 regions that 1 of them has the treasure.
+            case 2: #2. 2-5 regions that 1 of them has the treasure.->DONE
                 bmap = var(self.mapsize,[],[],1)
                 for i in input[2]:
                     bmap = bmap + var(self.mapsize, self.map.region[i][0], self.map.region[i][1], input[1])
@@ -406,7 +406,12 @@ wins the game. -> WIN.
 if __name__ == '__main__':
     mmap = nmap('input/a.txt')
     a = agentkm((0,2),mmap)
-    for _ in range(20):
-        a.step([1,1,[[1,2,3],[5,4,1]]])
-        print(a.mask.mask,a.pos)
-        print('----------------------------------------')
+
+    a.solveI([2,1,[1,2]])
+    print(a.mask.mask)
+    print(a.map.mmap)
+
+    # for _ in range(20):
+    #     a.step([1,1,[[1,2,3],[5,4,1]]])
+    #     print(a.mask.mask,a.pos)
+    #     print('----------------------------------------')
