@@ -80,7 +80,7 @@ SMALL_DOWNRIGHT: [X,Y]...
 15.The treasure is in a region that has mountain
 TODO: [CMD, VERIFY]
 '''
-    map = [["0","0","4","4","4"],["0","1T","4M","4","4"],["1","1M","3M","3","5"],["2","1","1","3","5"],["2","2","0","3","5"]]
+        map = [["0","0","4P","4","4"],["0","1T","4M","4","4"],["1","1M","3M","3P","5"],["2","1","1","3","5"],["2","2","0","3","5P"]]
     m=len(map)-1
     n=len(map[0])-1
     r=6
@@ -149,6 +149,22 @@ TODO: [CMD, VERIFY]
 
         return [5,not ((xs<=tx) and (tx<=xe) and (ys<=ty) and (ty<=ye)),[xs,ys,xe,ye]]
 
+    def piratePosition():
+        listPrison = []
+        for i in range (m+1):
+            for j in range (n+1):
+                if map[i][j].find("P") == True:
+                    listPrison.append([i,j])
+        x = random.randint(0,len(listPrison)-1)
+        return listPrison[x]
+    def type6(xAgent, yAgent): #passing position of agent
+        pos = piratePosition()
+        xPirate = pos[0]
+        yPirate = pos[1]
+        disPirate = math.sqrt((xPirate - tx)**2 + (yPirate - ty)**2)
+        disAgent = math.sqrt((xAgent - tx)**2 + (yAgent - ty)**2)
+        return (disAgent > disPirate)
+
     def type7():
         r=-1
         c=-1
@@ -212,7 +228,10 @@ TODO: [CMD, VERIFY]
             b.append(map[max(tx-1,0)][ty].translate({ord(i): None for i in 'MPT'}))
         #if (map[min(tx+1,m)][min(ty+1,n)].translate({ord(i): None for i in 'MPT'}) not in b):
         #    b.append(map[max(tx-1,0)][min(ty+1,n)].translate({ord(i): None for i in 'MPT'}))
-        return b.remove(t);
+        if (t in b):
+            return b.remove(t)
+        else:
+            return b
 
     boundaryList = createBoundaryList()
     def type9():
@@ -289,15 +308,13 @@ TODO: [CMD, VERIFY]
 
     def type15():
         return [15,map[tx][ty].find("M")>-1]
-
-
-    #MAIN FUNCTIONALITIES
-    def __init__(self, mmap:nmap):
-        self.map = mmap
-        #choose randomly a position of prison and set it as init position of pirate 
-        pass
-    def hint(self):
-        pass
-    def report(self):
-        #report present position
-        pass
+        #MAIN FUNCTIONALITIES
+        def __init__(self, mmap:nmap):
+            self.map = mmap
+            #choose randomly a position of prison and set it as init position of pirate 
+            pass
+        def hint(self):
+            pass
+        def report(self):
+            #report present position
+            pass
