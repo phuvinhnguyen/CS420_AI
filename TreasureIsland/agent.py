@@ -148,8 +148,22 @@ wins the game. -> WIN.
 
         
     def solveI(self, input):
+        def minus(x,y,k,side):
+            if side == 'up':
+                rm = np.where(x<k)
+            elif side == 'down':
+                rm = np.where(x>=self.size[0]-k)
+            elif side == 'left':
+                rm = np.where(y<k)
+            elif side == 'right':
+                rm = np.where(y>=self.size[1]-k)
+            x_ = np.delete(x, rm)
+            y_ = np.delete(y, rm)
+
+            return x_,y_
+            
         match input[0]:
-            case 1: #1. A list of random tiles that doesn't contain the treasure (1 to 12).
+            case 1: #1. A list of random tiles that doesn't contain the treasure (1 to 12)->DONE
                 bmap = var(self.mapsize, [x for x in input[2][0]],[y for y in input[2][1]], not input[1])
                 self.mask = self.mask*bmap
             case 2: #2. 2-5 regions that 1 of them has the treasure.
@@ -241,17 +255,32 @@ wins the game. -> WIN.
                         bmap.mask[:,input[2][1]] = 1
                 self.map = self.map*bmap
             case 9:
+                x0 = np.array(self.map.region[input[2][0]][0])
+                y0 = np.array(self.map.region[input[2][0]][1])
+                x1 = np.array(self.map.region[input[2][1]][0])
+                y1 = np.array(self.map.region[input[2][1]][1])
+
+                l0 = minus(x0,y0,1,'left')
+                r0 = minus(x0,y0,1,'right')
+                u0 = minus(x0,y0,1,'up')
+                d0 = minus(x0,y0,1,'down')
+
+                l1 = minus(x1,y1,1,'left')
+                r1 = minus(x1,y1,1,'right')
+                u1 = minus(x1,y1,1,'up')
+                d1 = minus(x1,y1,1,'down')
+
                 bmap0 = var(self.mapsize,[],[],1)
-                bmap0.mask[np.array(self.map.region[input[2][0]][0])+1, np.array(self.map.region[input[2][0]][1])] = 1
-                bmap0.mask[np.array(self.map.region[input[2][0]][0])-1, np.array(self.map.region[input[2][0]][1])] = 1
-                bmap0.mask[np.array(self.map.region[input[2][0]][0]), np.array(self.map.region[input[2][0]][1])+1] = 1
-                bmap0.mask[np.array(self.map.region[input[2][0]][0]), np.array(self.map.region[input[2][0]][1])-1] = 1
+                bmap0.mask[l0[0], l0[1]] = 1
+                bmap0.mask[r0[0], r0[1]] = 1
+                bmap0.mask[u0[0], u0[1]] = 1
+                bmap0.mask[d0[0], d0[1]] = 1
 
                 bmap1 = var(self.mapsize,[],[],1)
-                bmap1.mask[np.array(self.map.region[input[2][1]][0])+1, np.array(self.map.region[input[2][1]][1])] = 1
-                bmap1.mask[np.array(self.map.region[input[2][1]][0])-1, np.array(self.map.region[input[2][1]][1])] = 1
-                bmap1.mask[np.array(self.map.region[input[2][1]][0]), np.array(self.map.region[input[2][1]][1])+1] = 1
-                bmap1.mask[np.array(self.map.region[input[2][1]][0]), np.array(self.map.region[input[2][1]][1])-1] = 1
+                bmap1.mask[l1[0], l1[1]] = 1
+                bmap1.mask[r1[0], r1[1]] = 1
+                bmap1.mask[u1[0], u1[1]] = 1
+                bmap1.mask[d1[0], d1[1]] = 1
 
                 bmap = bmap0*bmap1
                 if input[1]:
@@ -277,11 +306,31 @@ wins the game. -> WIN.
                     bmap.mask = 1-bmap.mask
                 self.map = self.map*bmap
             case 11:
+                x = np.array(self.map.region[0][0])
+                y = np.array(self.map.region[0][1])
+                l3 = minus(x,y,3,'left')
+                r3 = minus(x,y,3,'right')
+                u3 = minus(x,y,3,'up')
+                d3 = minus(x,y,3,'down')
+                l1 = minus(x,y,1,'left')
+                r1 = minus(x,y,1,'right')
+                u1 = minus(x,y,1,'up')
+                d1 = minus(x,y,1,'down')
+                
+                bmap = var(self.mapsize,[],[],1)
+                bmap.mask[l3[0],l3[1]] = 1
+                bmap.mask[r3[0],r3[1]] = 1
+                bmap.mask[u3[0],u3[1]] = 1
+                bmap.mask[d3[0],d3[1]] = 1
+                bmap.mask[l1[0],l1[1]] = 0
+                bmap.mask[r1[0],r1[1]] = 0
+                bmap.mask[u1[0],u1[1]] = 0
+                bmap.mask[d1[0],d1[1]] = 0
 
-                if input[1]:
-                    pass
-                else:
-                    pass
+                if not input[1]:
+                    bmap.mask = 1 - bmap.mask
+
+                self.map = self.map*bmap
             case 12:
                 bmap = var(self.mapsize,[],[],0)
                 if input[1]:
@@ -305,42 +354,50 @@ wins the game. -> WIN.
                 
                 self.map = self.map*bmap
             case 13:
-                if input[1]:
-                    bmap = var(self.mapsize,[],[],1)
-                    midx, midy = int(self.mapsize[0]/2), int(self.mapsize[1]/2)
-                    match input[2]:
-                        case 'S':
-                            for y in range(self.mapsize[1]):
-                                bmap.mask[midx+abs(y-midy):,y] = 1
-                        case 'W':
-                            for x in range(self.mapsize[0]):
-                                bmap.mask[x,:midy-abs(x-midx)] = 1
-                        case 'E':
-                            for x in range(self.mapsize[0]):
-                                bmap.mask[x,midy+abs(x-midx):] = 1
-                        case 'N':
-                            for y in range(self.mapsize[1]):
-                                bmap.mask[:midx-abs(y-midy),y] = 1
-                        case 'SE':
-                            bmap.mask[midx:,midy:] = 1
-                        case 'SW':
-                            bmap.mask[midx:,:midy] = 1
-                        case 'NE':
-                            bmap.mask[:midx,midy:] = 1
-                        case 'NW':
-                            bmap.mask[:midx,:midy] = 1
-                else:
-                    pass
+                bmap = var(self.mapsize,[],[],1)
+                midx, midy = int(self.mapsize[0]/2), int(self.mapsize[1]/2)
+                match input[2]:
+                    case 'S':
+                        for y in range(self.mapsize[1]):
+                            bmap.mask[midx+abs(y-midy):,y] = 1
+                    case 'W':
+                        for x in range(self.mapsize[0]):
+                            bmap.mask[x,:midy-abs(x-midx)] = 1
+                    case 'E':
+                        for x in range(self.mapsize[0]):
+                            bmap.mask[x,midy+abs(x-midx):] = 1
+                    case 'N':
+                        for y in range(self.mapsize[1]):
+                            bmap.mask[:midx-abs(y-midy),y] = 1
+                    case 'SE':
+                        bmap.mask[midx:,midy:] = 1
+                    case 'SW':
+                        bmap.mask[midx:,:midy] = 1
+                    case 'NE':
+                        bmap.mask[:midx,midy:] = 1
+                    case 'NW':
+                        bmap.mask[:midx,:midy] = 1
+
+                if not input[1]:
+                    bmap.mask = 1 - bmap.mask
+
+                self.map = self.map*bmap
             case 14:
-                if input[1]:
-                    pass
-                else:
-                    pass
+                bmap = var(self.mapsize,[],[],1)
+                bmap.mask[input[3][0][0]:input[3][1][0]+1,input[3][0][1]:input[3][1][1]+1] = 1
+                bmap.mask[input[2][0][0]:input[2][1][0]+1,input[2][0][1]:input[2][1][1]+1] = 0
+                if not input[1]:
+                    bmap.mask = 1 - bmap.mask
+                
+                self.map = self.map*bmap
             case 15:
                 if input[1]:
-                    pass
+                    bmap = var(self.mapsize,[],[],1)
+                    bmap.mask[self.map.M[0], self.map.M[1]] = 1
                 else:
-                    pass
+                    bmap = var(self.mapsize,[],[],0)
+                    bmap.mask[self.map.M[0], self.map.M[1]] = 0
+                self.map = self.map * bmap
     
     
     def report(self):

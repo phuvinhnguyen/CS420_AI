@@ -42,8 +42,8 @@ o r = 0 is sea.
                     self.region[reg][1].append(x_axis)
                     self.region[reg][0].append(y_axis)
                     if 'M' in tile:
-                        self.M[0].append(x_axis)
-                        self.M[1].append(y_axis)
+                        self.M[0].append(y_axis)
+                        self.M[1].append(x_axis)
                         
                     x_axis += 1
                 self.mmap.append(l)
