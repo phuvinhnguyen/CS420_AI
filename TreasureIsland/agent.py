@@ -122,7 +122,11 @@ wins the game. -> WIN.
             return
         path = path[:5]
         for i in path:
-            self.mask.mask[i[1],i[0]] = 1 if 'T' in self.map.mmap[i[1]][i[0]] else 0
+            if 'T' in self.map.mmap[i[0]][i[1]]:
+                self.WIN = True
+                self.mask = var(self.mapsize,[i[0]],[i[1]],1)
+            else:
+                self.mask.mask[i[0],i[1]] = 0
         self.pos = path[-1]
         self.scan(len(path))
 
