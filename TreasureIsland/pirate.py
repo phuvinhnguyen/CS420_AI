@@ -209,10 +209,12 @@ class pirate:
 #MAIN FUNCTIONALITIES
     def __init__(self, mmap:nmap):
         self.map = mmap
+        self.pos
         #choose randomly a position of prison and set it as init position of pirate 
         pass
     def hint(self):
         pass
     def report(self):
         #report present position
+        return 
         pass
