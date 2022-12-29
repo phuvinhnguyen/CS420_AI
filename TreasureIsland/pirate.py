@@ -95,19 +95,7 @@ class pirate:
             r=random.randint(-1,m)
             c=random.randint(-1,n)
 
-        if (r==-1):
-            for i in range(0,m+1):
-                if (map[i][c].find("T")>-1):
-                    return [7, True, [-1,c]]
-            return [7, False, [-1,c]]
-
-        if (c==-1):
-            for i in range(0,n+1):
-                if (map[r][i].find("T")>-1):
-                    return [7, True, [r,-1]]
-            return [7, False, [r,-1]]
-
-        return [7,map[r][c].find("T")>-1,[r,c]]
+        return [7,(tx==c) or (ty==r),[r,c]]
 
     def type8():
         r=-1
@@ -116,19 +104,7 @@ class pirate:
             r=random.randint(-1,m)
             c=random.randint(-1,n)
 
-        if (r==-1):
-            for i in range(0,m+1):
-                if (map[i][c].find("T")>-1):
-                    return [7, False, [-1,c]]
-            return [7, True, [-1,c]]
-
-        if (c==-1):
-            for i in range(0,n+1):
-                if (map[r][i].find("T")>-1):
-                    return [7, False, [r,-1]]
-            return [7, True, [r,-1]]
-
-        return [7,map[r][c].find("T")==-1,[r,c]]
+        return [7,(tx!=c) and (ty!=r),[r,c]]
 
     #bound = have same edge or vertix
     def createBoundaryList():
