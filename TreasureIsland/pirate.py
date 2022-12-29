@@ -8,7 +8,18 @@ class pirate:
     n=len(map[0])-1
     r=6
     tx,ty=1,1
-
+    
+    def piratePosition():
+        listPrison = []
+        for i in range (m+1):
+            for j in range (n+1):
+                if map[i][j].find("P") == True:
+                    listPrison.append([i,j])
+        x = random.randint(0,len(listPrison)-1)
+        return listPrison[x][0], listPrison[x][1]
+    
+    xPirate, yPirate = piratePosition()
+    
     def type1():
         verify = True
         s =  random.randint(1, 12)
@@ -72,21 +83,10 @@ class pirate:
 
         return [5,not ((xs<=tx) and (tx<=xe) and (ys<=ty) and (ty<=ye)),[xs,ys,xe,ye]]
 
-    def piratePosition():
-        listPrison = []
-        for i in range (m+1):
-            for j in range (n+1):
-                if map[i][j].find("P") == True:
-                    listPrison.append([i,j])
-        x = random.randint(0,len(listPrison)-1)
-        return listPrison[x]
     def type6(xAgent, yAgent): #passing position of agent
-        pos = piratePosition()
-        xPirate = pos[0]
-        yPirate = pos[1]
         disPirate = math.sqrt((xPirate - tx)**2 + (yPirate - ty)**2)
         disAgent = math.sqrt((xAgent - tx)**2 + (yAgent - ty)**2)
-        return (disAgent > disPirate)
+        return [6,disAgent > disPirate]
 
     def type7():
         r=-1
@@ -149,8 +149,7 @@ class pirate:
         return [10, len(boundaryList)>0]
 
     def type11():
-        x=random.randint(1,3)
-        for i in range(1,x+1):
+        for i in range(2,4):
             if (map[max(tx-i,0)][ty]=="0") or (map[min(tx+i,m)][ty]=="0") or (map[tx][max(ty-i,0)]=="0") or (map[tx][min(ty+i,n)]=="0"):
                 return [11, True]
         return [11,False]
