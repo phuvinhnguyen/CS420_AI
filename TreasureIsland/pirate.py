@@ -206,18 +206,71 @@ class pirate:
 
     def type15():
         return [15,map[tx][ty].find("M")>-1]
+    
+    def pirateMove():
+        xMove, yMove = int((tx-xPirate)/(abs(tx-xPirate))), int((ty-yPirate)/(abs(ty-yPirate)))
+        if (xMove==0) or (yMove==0):
+            if (xPirate+xMove==tx) and (yPirate+yMove==ty):
+                xPirate+=xMove
+                yPirate+=2*yMove
+            else:
+                xPirate+=2*xMove
+                yPirate+=2*yMove
+        else:
+            xPirate+=xMove
+            yPirate+=yMove
+            
 #MAIN FUNCTIONALITIES
     def __init__(self, mmap:nmap):
         self.map = mmap.mmap
         self.pos
         #choose randomly a position of prison and set it as init position of pirate 
         pass
-    def hint(self):
-        pass
+    def hint(self, xAgent, yAgent, type): #type here means firt turn or not
+        h = []
+        while(True):
+            x = random.randint(1,15)
+            match x:
+                case 1:
+                    h = type1()
+                case 2:
+                    h = type2()
+                case 3:
+                    h = type3()
+                case 4:
+                    h = type4()
+                case 5:
+                    h = type5()
+                case 6:
+                    h = type6(xAgent, yAgent)
+                case 7:
+                    h = type7()
+                case 8:
+                    h = type8()
+                case 9:
+                    h = type9()
+                case 10:
+                    h = type10()
+                case 11:
+                    h = type11()
+                case 12:
+                    h = type12()
+                case 13:
+                    h = type13()
+                case 14:
+                    h = type14()
+                case 15:
+                    h = type15()
+                case default:
+                    h = []
+                if (h[1]==True) or (type = 0):
+                    break
+        return h
+                
     def report(self):
         #report present position
-        return 
-        pass
+        return [xPirate, y Pirate]
+   
 
 if __name__ == '__main__':
     pir = pirate(nmap('./input/a.txt'))
