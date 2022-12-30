@@ -5,6 +5,7 @@ from agent import agentkm
 
 class pirate:
     #RULE
+<<<<<<< HEAD
     
 #MAIN FUNCTIONALITIES
     def __init__(self, mmap:nmap):
@@ -42,6 +43,26 @@ class pirate:
         return b.remove(t)
 
     def type1(self):
+=======
+    map = [["0","0","4P","4","4"],["0","1T","4M","4","4"],["1","1M","3M","3P","5"],["2","1","1","3","5"],["2","2","0","3","5P"]]
+    m=len(map)-1
+    n=len(map[0])-1
+    r=6
+    tx,ty=1,1
+    
+    def piratePosition():
+        listPrison = []
+        for i in range (m+1):
+            for j in range (n+1):
+                if map[i][j].find("P") == True:
+                    listPrison.append([i,j])
+        x = random.randint(0,len(listPrison)-1)
+        return listPrison[x][0], listPrison[x][1]
+    
+    xPirate, yPirate = piratePosition()
+    
+    def type1():
+>>>>>>> d024c9dae223dde49306e34e63e84712d70a63e5
         verify = True
         s =  random.randint(1, 12)
         tileList = []
@@ -110,6 +131,7 @@ class pirate:
         disAgent = math.sqrt((xAgent - self.tx)**2 + (yAgent - self.ty)**2)
         return [6,disAgent > disPirate]
 
+<<<<<<< HEAD
     def type7(self):
         r=-1
         c=-1
@@ -155,6 +177,71 @@ class pirate:
     def type9(self):
         boundaryList = self.createBoundaryList()
         t = self.map[self.tx][self.ty].translate({ord(i): None for i in 'MPT'})
+=======
+    def type5():
+        l=int(random.randint(0,n)*0.3)+1
+        w=int(random.randint(0,m)*0.3)+1
+
+        xs=random.randint(0,n)
+        ys=random.randint(0,m)
+        xe=min(xs+l,n)
+        ye=min(ys+w,m)
+
+        return [5,not ((xs<=tx) and (tx<=xe) and (ys<=ty) and (ty<=ye)),[xs,ys,xe,ye]]
+
+    def type6(xAgent, yAgent): #passing position of agent
+        disPirate = math.sqrt((xPirate - tx)**2 + (yPirate - ty)**2)
+        disAgent = math.sqrt((xAgent - tx)**2 + (yAgent - ty)**2)
+        return [6,disAgent > disPirate]
+
+    def type7():
+        r=-1
+        c=-1
+        while ((r==-1) and (c==-1)):
+            r=random.randint(-1,m)
+            c=random.randint(-1,n)
+
+        return [7,(tx==c) or (ty==r),[r,c]]
+
+    def type8():
+        r=-1
+        c=-1
+        while ((r==-1) and (c==-1)):
+            r=random.randint(-1,m)
+            c=random.randint(-1,n)
+
+        return [7,(tx!=c) and (ty!=r),[r,c]]
+
+    #bound = have same edge or vertix
+    def createBoundaryList():
+        b = []
+        t = map[tx][ty].translate({ord(i): None for i in 'MPT'})
+        b.append(int(t))
+        #if (map[max(tx-1,0)][max(ty-1,0)].translate({ord(i): None for i in 'MPT'}) not in b):
+        #    b.append(map[max(tx-1,0)][max(ty-1,0)].translate({ord(i): None for i in 'MPT'}))
+        if (map[max(tx-1,0)][ty].translate({ord(i): None for i in 'MPT'}) not in b):
+           b.append(map[max(tx-1,0)][ty].translate({ord(i): None for i in 'MPT'}))
+        #if (map[max(tx-1,0)][min(ty+1,n)].translate({ord(i): None for i in 'MPT'}) not in b):
+        #    b.append(map[max(tx-1,0)][min(ty+1,n)].translate({ord(i): None for i in 'MPT'}))
+        if (map[tx][max(ty-1,0)].translate({ord(i): None for i in 'MPT'}) not in b):
+            b.append(map[max(tx-1,0)][max(ty-1,0)].translate({ord(i): None for i in 'MPT'}))
+        if (map[tx][min(ty+1,n)].translate({ord(i): None for i in 'MPT'}) not in b):
+            b.append(map[max(tx-1,0)][min(ty+1,n)].translate({ord(i): None for i in 'MPT'}))
+        #if (map[min(tx+1,m)][max(ty-1,0)].translate({ord(i): None for i in 'MPT'}) not in b):
+        #    b.append(map[max(tx-1,0)][max(ty-1,0)].translate({ord(i): None for i in 'MPT'}))
+        if (map[min(tx+1,m)][ty].translate({ord(i): None for i in 'MPT'}) not in b):
+            b.append(map[max(tx-1,0)][ty].translate({ord(i): None for i in 'MPT'}))
+        #if (map[min(tx+1,m)][min(ty+1,n)].translate({ord(i): None for i in 'MPT'}) not in b):
+        #    b.append(map[max(tx-1,0)][min(ty+1,n)].translate({ord(i): None for i in 'MPT'}))
+        if (t in b):
+            return b.remove(t)
+        else:
+            return b
+
+    boundaryList = createBoundaryList()
+    def type9():
+        t = map[tx][ty].translate({ord(i): None for i in 'MPT'})
+>>>>>>> d024c9dae223dde49306e34e63e84712d70a63e5
         x=-1
         y=-1
         while (x==y):
@@ -169,10 +256,16 @@ class pirate:
         boundaryList = self.createBoundaryList()
         return [10, len(boundaryList)>0]
 
+<<<<<<< HEAD
     def type11(self):
         x=random.randint(1,3)
         for i in range(1,x+1):
             if (map[max(self.tx-i,0)][self.ty]=="0") or (map[min(self.tx+i,self.map.mapsize[0] - 1)][self.ty]=="0") or (map[self.tx][max(self.ty-i,0)]=="0") or (map[self.tx][min(self.ty+i,self.map.mapsize[1] - 1)]=="0"):
+=======
+    def type11():
+        for i in range(2,4):
+            if (map[max(tx-i,0)][ty]=="0") or (map[min(tx+i,m)][ty]=="0") or (map[tx][max(ty-i,0)]=="0") or (map[tx][min(ty+i,n)]=="0"):
+>>>>>>> d024c9dae223dde49306e34e63e84712d70a63e5
                 return [11, True]
         return [11,False]
 
@@ -229,12 +322,39 @@ class pirate:
     def type15(self):
         return [15,self.map[self.tx][self.ty].find("M")>-1]
 
+<<<<<<< HEAD
     def hint(self):
+=======
+    def type15():
+        return [15,map[tx][ty].find("M")>-1]
+    
+    def pirateMove():
+        xMove, yMove = int((tx-xPirate)/(abs(tx-xPirate))), int((ty-yPirate)/(abs(ty-yPirate)))
+        if (xMove==0) or (yMove==0):
+            if (xPirate+xMove==tx) and (yPirate+yMove==ty):
+                xPirate+=xMove
+                yPirate+=2*yMove
+            else:
+                xPirate+=2*xMove
+                yPirate+=2*yMove
+        else:
+            xPirate+=xMove
+            yPirate+=yMove
+            
+#MAIN FUNCTIONALITIES
+    def __init__(self, mmap:nmap):
+        self.map = mmap.mmap
+        self.pos
+        #choose randomly a position of prison and set it as init position of pirate 
+        pass
+    def hint(self, xAgent, yAgent, type): #type here means firt turn or not
+>>>>>>> d024c9dae223dde49306e34e63e84712d70a63e5
         h = []
         while(True):
             x = random.randint(1,15)
             match x:
                 case 1:
+<<<<<<< HEAD
                     h = self.type1()
                 case 2:
                     h = self.type2()
@@ -272,6 +392,48 @@ class pirate:
     def report(self):
         #report present position
         return self.posPirate
+=======
+                    h = type1()
+                case 2:
+                    h = type2()
+                case 3:
+                    h = type3()
+                case 4:
+                    h = type4()
+                case 5:
+                    h = type5()
+                case 6:
+                    h = type6(xAgent, yAgent)
+                case 7:
+                    h = type7()
+                case 8:
+                    h = type8()
+                case 9:
+                    h = type9()
+                case 10:
+                    h = type10()
+                case 11:
+                    h = type11()
+                case 12:
+                    h = type12()
+                case 13:
+                    h = type13()
+                case 14:
+                    h = type14()
+                case 15:
+                    h = type15()
+                case default:
+                    h = []
+                if (h[1]==True) or (type = 0):
+                    break
+        return h
+                
+    def report(self):
+        #report present position
+        return [xPirate, y Pirate]
+   
+
+>>>>>>> d024c9dae223dde49306e34e63e84712d70a63e5
 if __name__ == '__main__':
     pir = pirate(nmap('./input/a.txt'))
     print('this is map: nmap.mmap')
@@ -279,4 +441,8 @@ if __name__ == '__main__':
     print('this is mapsize: nmap.mapsize')
     print(pir.map.mapsize)
     print('this is pos of Treasure')
+<<<<<<< HEAD
     print(pir.map.Tx, pir.map.Ty)
+=======
+    print(pir.map.Tx, pir.map.Ty)
+>>>>>>> d024c9dae223dde49306e34e63e84712d70a63e5
