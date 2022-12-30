@@ -263,13 +263,13 @@ class pirate:
                     h = type15()
                 case default:
                     h = []
-                if (h[1]==True) or (type = 0):
-                    break
+            if (h[1]==True) or (type == 0):
+                break
         return h
                 
     def report(self):
         #report present position
-        return [xPirate, y Pirate]
+        return [xPirate, yPirate]
    
 
 if __name__ == '__main__':
