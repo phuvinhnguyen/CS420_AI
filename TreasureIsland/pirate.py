@@ -208,7 +208,7 @@ class pirate:
         return [15,map[tx][ty].find("M")>-1]
 #MAIN FUNCTIONALITIES
     def __init__(self, mmap:nmap):
-        self.map = mmap
+        self.map = mmap.mmap
         self.pos
         #choose randomly a position of prison and set it as init position of pirate 
         pass
@@ -218,3 +218,12 @@ class pirate:
         #report present position
         return 
         pass
+
+if __name__ == '__main__':
+    pir = pirate(nmap('./input/a.txt'))
+    print('this is map: nmap.mmap')
+    print(pir.map.mmap)
+    print('this is mapsize: nmap.mapsize')
+    print(pir.map.mapsize)
+    print('this is pos of Treasure')
+    print(pir.map.Tx, pir.map.Ty)
