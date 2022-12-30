@@ -3,7 +3,26 @@ from map_generation import nmap
 from agent import agentkm,var
 import random
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import imageio.v3 as iio
 
+def displayText(map):
+    for i in range(len(data)):
+        for j in range(len(data[0])):
+            texts[i][j].remove()
+            texts[i][j] = ax.text(j, i, map[i][j],ha="center", va="center", color="w")
+            
+    # Used to return the plot as an image rray
+    fig.canvas.draw()       # draw the canvas, cache the renderer
+    image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
+    image  = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+    return image
+
+def updateMap(x,y,z,t,k,map):
+    map[x][y].translate({ord(k): None})
+    map[z][t] += k
+    
 def get_init_place(mmap:nmap):
     m = var(mmap.mapsize, mmap.M[0]+mmap.region[0][0], mmap.M[1]+mmap.region[0][1], 0)
     pos = np.where(m.mask==1)
@@ -13,7 +32,7 @@ def get_init_place(mmap:nmap):
 if __name__ == '__main__':
     mmap = nmap('input/a.txt')
     pir = pirate.pirate(mmap)
-    
+    maps = [] #lưu giá trị các bước di chuyễn
     init_place = get_init_place(mmap) #generate initial place
     result = None
 
@@ -26,15 +45,42 @@ if __name__ == '__main__':
         elif pir.WIN == True:
             result = 'LOSE'
             break
-
+        agent_prev_pos = agent.report()
+        pirate_prev_pos = pir.report()
         input = pir.hint()
         agent.step(input)
 
         agent_view = agent.mask
         agent_pos = agent.report()
         pirate_pos = pir.report()
-
+        map = mmap.copy()
+        updateMap(agent_prev_pos[0],agent_prev_pos[1],agent_pos[0],agent_pos[1],"A",map)
+        updateMap(pirate_prev_pos[0],pirate_prev_pos[1],pirate_pos[0],pirate_pos[1],"Pr",map)
+        maps.append(map)
         #display
     
 
     #show result
+    # Generating data for the heat map
+    data = []
+    for i in range(len(mmap)):
+        d=[]
+        for j in range(len(mmap)):
+            t=mmap[i][j]
+            d.append(t.translate({ord(k): None for k in 'MPT'})
+        data.append(d)
+                  
+    fig = plt.figure()
+    # Function to show the heat map
+    fig, ax = plt.subplots()
+    im = ax.imshow(data)
+
+    texts=[]
+    for i in range(len(data)):
+        text=[]
+        for j in range(len(data[0])):
+            text.append(ax.text(j, i, "0",ha="center", va="center", color="w"))
+        texts.append(text)
+    #ims=[]
+    kwargs_write = {'fps':1.0, 'quantizer':'nq'}
+    iio.imwrite("./powers.gif", [displayText(i) for i in maps], duration=1000)
