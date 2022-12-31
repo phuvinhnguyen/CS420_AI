@@ -19,9 +19,11 @@ class pirate:
         self.region = mmap.nregion
         self.tx = mmap.Tx
         self.ty = mmap.Ty
+        self.WIN = False
+        self.posAgent = (-1,-1)
               
-    def posAgent(self, agent:agentkm):
-        return agent.report
+    def getAgenPos(self, agent:agentkm):
+        self.posAgent = agent.pos
 
     def createBoundaryList(self):
         b = []
@@ -105,7 +107,7 @@ class pirate:
         return [5,not ((xs <= self.tx) and (self.tx <= xe) and (ys <= self.ty) and (self.ty <=ye)),[xs,ys,xe,ye]]
 
     def type6(self): #passing position of agent
-        xAgent, yAgent = self.posAgent()
+        xAgent, yAgent = self.posAgent[0], self.posAgent[1]
         disPirate = math.sqrt((self.posPirate[0] - self.tx)**2 + (self.posPirate[1] - self.ty)**2)
         disAgent = math.sqrt((xAgent - self.tx)**2 + (yAgent - self.ty)**2)
         return [6,disAgent > disPirate]
@@ -266,7 +268,7 @@ class pirate:
                     h = self.type15()
                 case default:
                     h = []
-            if (h[1]==True) or self.type == 0:
+            if (h[1]==True) or self.type1 == 0:
                 break
         return h
     def report(self):

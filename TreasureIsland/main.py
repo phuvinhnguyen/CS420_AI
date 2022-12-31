@@ -35,10 +35,17 @@ if __name__ == '__main__':
     maps = [] #lưu giá trị các bước di chuyễn
     init_place = get_init_place(mmap) #generate initial place
     result = None
+    rpp = mmap.turnnumber_pp
 
     agent = agentkm(init_place, mmap)
 
     while True:
+        # position of pirate
+        if rpp > 0:
+            rpp -= 1
+        else:
+            agent.pirate_pos = pir.posPirate
+
         if agent.WIN == True:
             result = 'WIN'
             break
@@ -46,6 +53,7 @@ if __name__ == '__main__':
             result = 'LOSE'
             break
         agent_prev_pos = agent.report()
+        pir.getAgenPos(agent)
         pirate_prev_pos = pir.report()
         input = pir.hint()
         agent.step(input)
