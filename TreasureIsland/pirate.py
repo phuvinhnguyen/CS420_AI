@@ -244,17 +244,23 @@ class pirate:
         return [15,self.map.mmap[self.tx][self.ty].find("M")>-1]
     
     def pirateMove(self):
-        xMove, yMove = int((self.tx-self.posPirate[0])/(abs(self.tx-self.posPirate[0]))), int((self.ty-self.posPirate[1])/(abs(self.ty-self.posPirate[1])))
-        if (xMove==0) or (yMove==0):
-            if (self.posPirate[0]+xMove==self.tx) and (self.posPirate[1]+yMove==self.ty):
-                self.posPirate[0]+=xMove
-                self.posPirate[1]+=2*yMove
-            else:
-                self.posPirate[0]+=2*xMove
-                self.posPirate[1]+=2*yMove
-        else:
-            self.posPirate[0]+=xMove
-            self.posPirate[1]+=yMove
+        xM,yM = self.tx-self.posPirate[0], self.ty-self.posPirate[1]
+        self.posPirate[0] += xM
+        self.posPirate[1] += yM
+        if xM == 0 and yM == 0:
+            self.WIN = True
+
+        # xMove, yMove = int((self.tx-self.posPirate[0])/(abs(self.tx-self.posPirate[0]))), int((self.ty-self.posPirate[1])/(abs(self.ty-self.posPirate[1])))
+        # if (xMove==0) or (yMove==0):
+        #     if (self.posPirate[0]+xMove==self.tx) and (self.posPirate[1]+yMove==self.ty):
+        #         self.posPirate[0]+=xMove
+        #         self.posPirate[1]+=2*yMove
+        #     else:
+        #         self.posPirate[0]+=2*xMove
+        #         self.posPirate[1]+=2*yMove
+        # else:
+        #     self.posPirate[0]+=xMove
+        #     self.posPirate[1]+=yMove
             
     def hint(self, type=1):
         if self.mcountdown != 0:

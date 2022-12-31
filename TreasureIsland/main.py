@@ -6,6 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import imageio.v3 as iio
+import copy
+
 
 def displayText(map):
     for i in range(len(data)):
@@ -61,7 +63,7 @@ if __name__ == '__main__':
         agent_view = agent.mask
         agent_pos = agent.report()
         pirate_pos = pir.report()
-        map = mmap.mmap.copy()
+        map = copy.deepcopy(mmap.mmap)
         updateMap(agent_prev_pos[0],agent_prev_pos[1],agent_pos[0],agent_pos[1],"A",map)
         updateMap(pirate_prev_pos[0],pirate_prev_pos[1],pirate_pos[0],pirate_pos[1],"Pr",map)
         maps.append(map)
@@ -70,10 +72,10 @@ if __name__ == '__main__':
     #show result
     # Generating data for the heat map
     data = []
-    for i in range(len(mmap)):
+    for i in range(len(mmap.mmap)):
         d=[]
-        for j in range(len(mmap)):
-            t=mmap[i][j]
+        for j in range(len(mmap.mmap[0])):
+            t=mmap.mmap[i][j]
             d.append(t.translate({ord(k): None for k in 'MPT'}))
         data.append(d)
                   

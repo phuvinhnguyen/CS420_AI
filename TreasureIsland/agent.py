@@ -104,7 +104,6 @@ wins the game. -> WIN.
     def step(self, input):
         self.solveI(input)
         m = self.score()
-        print(m)
         #find des
         des = np.where(m == np.max(m))
         des = (des[0][0],des[1][0])
@@ -344,12 +343,12 @@ wins the game. -> WIN.
                 bmap.mask[r3[0],r3[1]] = 1
                 bmap.mask[u3[0],u3[1]] = 1
                 bmap.mask[d3[0],d3[1]] = 1
-                print(bmap.mask)
+                
                 bmap.mask[l1[0],l1[1]] = 0
                 bmap.mask[r1[0],r1[1]] = 0
                 bmap.mask[u1[0],u1[1]] = 0
                 bmap.mask[d1[0],d1[1]] = 0
-                print(bmap.mask)
+                
 
                 if not input[1]:
                     bmap.mask = 1 - bmap.mask
