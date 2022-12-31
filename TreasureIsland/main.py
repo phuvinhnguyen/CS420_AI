@@ -76,7 +76,7 @@ if __name__ == '__main__':
         d=[]
         for j in range(len(mmap.mmap[0])):
             t=mmap.mmap[i][j]
-            d.append(t.translate({ord(k): None for k in 'MPT'}))
+            d.append(int(t.translate({ord(k): None for k in 'MPT'})))
         data.append(d)
                   
     fig = plt.figure()
