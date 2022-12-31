@@ -47,6 +47,8 @@ class pirate:
         verify = True
         s =  random.randint(1, 12)
         tileList = []
+        x_list = []
+        y_list = []
         for i in range(s):
             xs=random.randint(0,self.map.mapsize[1] - 1)
             ys=random.randint(0,self.map.mapsize[0] - 1)
@@ -54,15 +56,17 @@ class pirate:
                 verify = False
             if [xs, ys] not in tileList:
                 tileList.append([xs, ys])
+                x_list.append(xs)
+                y_list.append(ys)
             else:
                 i = i - 1
-        return [1,verify,tileList]
+        return [1,verify,[x_list,y_list]]
     
     def type2(self):
         s = min(random.randint(2,5), self.region)
         regionList = []
         while (len(regionList)<s):
-            x=random.randint(0, self.region - 1);
+            x=random.randint(0, self.region - 1)
             if x not in regionList:
                 regionList.append(x)
         t = self.map[self.tx][self.ty].replace('T','')
@@ -231,20 +235,20 @@ class pirate:
     def type15(self):
         return [15,self.map[self.tx][self.ty].find("M")>-1]
     
-    def pirateMove():
-        xMove, yMove = int((tx-xPirate)/(abs(tx-xPirate))), int((ty-yPirate)/(abs(ty-yPirate)))
+    def pirateMove(self):
+        xMove, yMove = int((self.tx-self.posPirate[0])/(abs(self.tx-self.posPirate[0]))), int((self.ty-self.posPirate[1])/(abs(self.ty-self.posPirate[1])))
         if (xMove==0) or (yMove==0):
-            if (xPirate+xMove==tx) and (yPirate+yMove==ty):
-                xPirate+=xMove
-                yPirate+=2*yMove
+            if (self.posPirate[0]+xMove==self.tx) and (self.posPirate[1]+yMove==self.ty):
+                self.posPirate[0]+=xMove
+                self.posPirate[1]+=2*yMove
             else:
-                xPirate+=2*xMove
-                yPirate+=2*yMove
+                self.posPirate[0]+=2*xMove
+                self.posPirate[1]+=2*yMove
         else:
-            xPirate+=xMove
-            yPirate+=yMove
+            self.posPirate[0]+=xMove
+            self.posPirate[1]+=yMove
             
-    def hint(self, type):
+    def hint(self, type=1):
         h = []
         while(True):
             x = random.randint(1,15)
@@ -279,9 +283,7 @@ class pirate:
                     h = self.type14()
                 case 15:
                     h = self.type15()
-                case default:
-                    h = []
-            if (h[1]==True) or self.type1 == 0:
+            if (h[1]==True) or type == 0:
                 break
         return h
     def report(self):

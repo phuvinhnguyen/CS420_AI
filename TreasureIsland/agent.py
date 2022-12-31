@@ -109,7 +109,7 @@ wins the game. -> WIN.
         des = np.where(m == np.max(m))
         des = (des[0][0],des[1][0])
         #find path to des
-        path = a_star_graph_search(self.pos,
+        path = a_star_graph_search(tuple(self.pos),
                                     goal_function=self.get_goal_function(des),
                                     successor_function=self.get_successor_function(self.grid),
                                     heuristic= self.get_heuristic(self.grid, des))
