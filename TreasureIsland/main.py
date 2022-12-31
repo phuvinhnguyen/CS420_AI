@@ -65,7 +65,6 @@ if __name__ == '__main__':
         updateMap(agent_prev_pos[0],agent_prev_pos[1],agent_pos[0],agent_pos[1],"A",map)
         updateMap(pirate_prev_pos[0],pirate_prev_pos[1],pirate_pos[0],pirate_pos[1],"Pr",map)
         maps.append(map)
-        #display
     
 
     #show result

@@ -9,6 +9,7 @@ class pirate:
 #MAIN FUNCTIONALITIES
     def __init__(self, mmap:nmap):
         self.map = mmap
+        self.mcountdown = mmap.turnnumber_fr
         #choose randomly a position of prison and set it as init position of pirate 
         listPrison = []
         for i in range (self.map.mapsize[0]):
@@ -41,7 +42,9 @@ class pirate:
         if (self.map.mmap[min(self.tx+1,self.map.mapsize[0] - 1)][self.ty].translate({ord(i): None for i in 'MPT'}) not in b):
             b.append(self.map.mmap[max(self.tx-1,0)][self.ty].translate({ord(i): None for i in 'MPT'}))
 
-        return b.remove(t)
+        b.remove(t)
+
+        return b
 
     def type1(self):
         verify = True
@@ -125,7 +128,7 @@ class pirate:
         
         if (r==-1):
             for i in range(0,self.map.mapsize[0]):
-                if (self.map[i][c].find("T")>-1):
+                if (self.map.mmap[i][c].find("T")>-1):
                     return [7, True, [-1,c]]
             return [7, False, [-1,c]]
             
@@ -233,7 +236,9 @@ class pirate:
         sxe=min(sxs+sl,bxe-1)
         sye=min(sys+sw,bye-1)
         
-        return [14,(((bxs<=self.tx) and (self.tx<=sxs)) or ((sxe<=self.tx) and (self.tx<=bxe))) and (((bys<=self.ty) and (self.ty<=sys)) or ((sye<=self.ty) and (self.ty<=bye))),[[bxs,bys,bxe,bye],[sxs,sys,sxe,sye]]]
+        return [14,
+        (((bxs<=self.tx) and (self.tx<=sxs)) or ((sxe<=self.tx) and (self.tx<=bxe))) and (((bys<=self.ty) and (self.ty<=sys)) or ((sye<=self.ty) and (self.ty<=bye))),
+        [[sxs,sys],[sxe,sye]],[[bxs,bys],[bxe,bye]]]
 
     def type15(self):
         return [15,self.map.mmap[self.tx][self.ty].find("M")>-1]
@@ -252,6 +257,11 @@ class pirate:
             self.posPirate[1]+=yMove
             
     def hint(self, type=1):
+        if self.mcountdown != 0:
+            self.mcountdown -= 1
+        else:
+            self.pirateMove()
+
         h = []
         while(True):
             x = random.randint(1,15)
