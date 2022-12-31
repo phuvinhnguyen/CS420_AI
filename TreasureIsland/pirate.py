@@ -230,8 +230,21 @@ class pirate:
 
     def type15(self):
         return [15,self.map[self.tx][self.ty].find("M")>-1]
-
-    def hint(self):
+    
+    def pirateMove():
+        xMove, yMove = int((tx-xPirate)/(abs(tx-xPirate))), int((ty-yPirate)/(abs(ty-yPirate)))
+        if (xMove==0) or (yMove==0):
+            if (xPirate+xMove==tx) and (yPirate+yMove==ty):
+                xPirate+=xMove
+                yPirate+=2*yMove
+            else:
+                xPirate+=2*xMove
+                yPirate+=2*yMove
+        else:
+            xPirate+=xMove
+            yPirate+=yMove
+            
+    def hint(self, type):
         h = []
         while(True):
             x = random.randint(1,15)
