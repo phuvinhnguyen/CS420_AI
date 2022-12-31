@@ -244,7 +244,16 @@ class pirate:
         return [15,self.map.mmap[self.tx][self.ty].find("M")>-1]
     
     def pirateMove(self):
-        xMove, yMove = int((self.tx-self.posPirate[0])/(abs(self.tx-self.posPirate[0]))), int((self.ty-self.posPirate[1])/(abs(self.ty-self.posPirate[1])))
+       if (self.tx - self.posPirate[0] == 0):
+            xMove = 0
+        else :
+            xMove = int((self.tx-self.posPirate[0])/(abs(self.tx-self.posPirate[0])))
+
+        if (self.ty - self.posPirate[1] == 0):
+            yMove = 0
+        else :
+            yMove = int((self.ty-self.posPirate[1])/(abs(self.ty-self.posPirate[1])))
+            
         if (xMove==0) or (yMove==0):
             if (self.posPirate[0]+xMove==self.tx) and (self.posPirate[1]+yMove==self.ty):
                 self.posPirate[0]+=xMove
