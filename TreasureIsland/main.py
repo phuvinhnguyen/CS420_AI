@@ -20,7 +20,7 @@ def displayText(map):
     return image
 
 def updateMap(x,y,z,t,k,map):
-    map[x][y].translate({ord(k): None})
+    # map[x][y].translate({ord(k): None})
     map[z][t] += k
     
 def get_init_place(mmap:nmap):
@@ -61,7 +61,7 @@ if __name__ == '__main__':
         agent_view = agent.mask
         agent_pos = agent.report()
         pirate_pos = pir.report()
-        map = mmap.copy()
+        map = mmap.mmap.copy()
         updateMap(agent_prev_pos[0],agent_prev_pos[1],agent_pos[0],agent_pos[1],"A",map)
         updateMap(pirate_prev_pos[0],pirate_prev_pos[1],pirate_pos[0],pirate_pos[1],"Pr",map)
         maps.append(map)

@@ -27,19 +27,19 @@ class pirate:
 
     def createBoundaryList(self):
         b = []
-        t = self.map[self.tx][self.ty].translate({ord(i): None for i in 'MPT'})
+        t = self.map.mmap[self.tx][self.ty].translate({ord(i): None for i in 'MPT'})
         b.append(int(t))
-        if (map[max(self.tx-1,0)][self.ty].translate({ord(i): None for i in 'MPT'}) not in b):
-            b.append(map[max(self.tx-1,0)][self.ty].translate({ord(i): None for i in 'MPT'}))
+        if (self.map.mmap[max(self.tx-1,0)][self.ty].translate({ord(i): None for i in 'MPT'}) not in b):
+            b.append(self.map.mmap[max(self.tx-1,0)][self.ty].translate({ord(i): None for i in 'MPT'}))
 
-        if (map[self.tx][max(self.ty-1,0)].translate({ord(i): None for i in 'MPT'}) not in b):
-            b.append(map[max(self.tx-1,0)][max(self.ty-1,0)].translate({ord(i): None for i in 'MPT'}))
+        if (self.map.mmap[self.tx][max(self.ty-1,0)].translate({ord(i): None for i in 'MPT'}) not in b):
+            b.append(self.map.mmap[max(self.tx-1,0)][max(self.ty-1,0)].translate({ord(i): None for i in 'MPT'}))
 
-        if (map[self.tx][min(self.ty+1,self.map.mapsize[1] - 1)].translate({ord(i): None for i in 'MPT'}) not in b):
-            b.append(map[max(self.tx-1,0)][min(self.ty+1,self.map.mapsize[1] - 1)].translate({ord(i): None for i in 'MPT'}))
+        if (self.map.mmap[self.tx][min(self.ty+1,self.map.mapsize[1] - 1)].translate({ord(i): None for i in 'MPT'}) not in b):
+            b.append(self.map.mmap[max(self.tx-1,0)][min(self.ty+1,self.map.mapsize[1] - 1)].translate({ord(i): None for i in 'MPT'}))
 
-        if (map[min(self.tx+1,self.map.mapsize[0] - 1)][self.ty].translate({ord(i): None for i in 'MPT'}) not in b):
-            b.append(map[max(self.tx-1,0)][self.ty].translate({ord(i): None for i in 'MPT'}))
+        if (self.map.mmap[min(self.tx+1,self.map.mapsize[0] - 1)][self.ty].translate({ord(i): None for i in 'MPT'}) not in b):
+            b.append(self.map.mmap[max(self.tx-1,0)][self.ty].translate({ord(i): None for i in 'MPT'}))
 
         return b.remove(t)
 
@@ -69,7 +69,7 @@ class pirate:
             x=random.randint(0, self.region - 1)
             if x not in regionList:
                 regionList.append(x)
-        t = self.map[self.tx][self.ty].replace('T','')
+        t = self.map.mmap[self.tx][self.ty].replace('T','')
         if (int(t) in regionList):
             return [2, True, regionList]
         else:
@@ -82,7 +82,7 @@ class pirate:
             x=random.randint(0,self.region - 1)
             if x not in regionList:
                 regionList.append(x)
-        t = self.map[self.tx][self.ty].replace('T','')
+        t = self.map.mmap[self.tx][self.ty].replace('T','')
         if (int(t) in regionList):
             return [2, False, regionList]
         else:
@@ -131,11 +131,11 @@ class pirate:
             
         if (c==-1):
             for i in range(0,self.map.mapsize[1]):
-                if (self.map[r][i].find("T")>-1):
+                if (self.map.mmap[r][i].find("T")>-1):
                     return [7, True, [r,-1]]
             return [7, False, [r,-1]]
         
-        return [7,self.map[r][c].find("T")>-1,[r,c]]
+        return [7,self.map.mmap[r][c].find("T")>-1,[r,c]]
 
     def type8(self):
         r=-1
@@ -146,21 +146,21 @@ class pirate:
         
         if (r==-1):
             for i in range(0,self.map.mapsize[0]):
-                if (self.map[i][c].find("T")>-1):
+                if (self.map.mmap[i][c].find("T")>-1):
                     return [7, False, [-1,c]]
             return [8, True, [-1,c]]
             
         if (c==-1):
             for i in range(0,self.map.mapsize[1]):
-                if (self.map[r][i].find("T")>-1):
+                if (self.map.mmap[r][i].find("T")>-1):
                     return [7, False, [r,-1]]
             return [8, True, [r,-1]]
         
-        return [8,self.map[r][c].find("T")==-1,[r,c]]
+        return [8,self.map.mmap[r][c].find("T")==-1,[r,c]]
 
     def type9(self):
         boundaryList = self.createBoundaryList()
-        t = self.map[self.tx][self.ty].translate({ord(i): None for i in 'MPT'})
+        t = self.map.mmap[self.tx][self.ty].translate({ord(i): None for i in 'MPT'})
         x=-1
         y=-1
         while (x==y):
@@ -178,7 +178,10 @@ class pirate:
     def type11(self):
         x=random.randint(1,3)
         for i in range(1,x+1):
-            if (map[max(self.tx-i,0)][self.ty]=="0") or (map[min(self.tx+i,self.map.mapsize[0] - 1)][self.ty]=="0") or (map[self.tx][max(self.ty-i,0)]=="0") or (map[self.tx][min(self.ty+i,self.map.mapsize[1] - 1)]=="0"):
+            if ((self.map.mmap[max(self.tx-i,0)][self.ty]=="0") or 
+                (self.map.mmap[min(self.tx+i,self.map.mapsize[0] - 1)][self.ty]=="0") or 
+                (self.map.mmap[self.tx][max(self.ty-i,0)]=="0") or 
+                (self.map.mmap[self.tx][min(self.ty+i,self.map.mapsize[1] - 1)]=="0")):
                 return [11, True]
         return [11,False]
 
@@ -233,7 +236,7 @@ class pirate:
         return [14,(((bxs<=self.tx) and (self.tx<=sxs)) or ((sxe<=self.tx) and (self.tx<=bxe))) and (((bys<=self.ty) and (self.ty<=sys)) or ((sye<=self.ty) and (self.ty<=bye))),[[bxs,bys,bxe,bye],[sxs,sys,sxe,sye]]]
 
     def type15(self):
-        return [15,self.map[self.tx][self.ty].find("M")>-1]
+        return [15,self.map.mmap[self.tx][self.ty].find("M")>-1]
     
     def pirateMove(self):
         xMove, yMove = int((self.tx-self.posPirate[0])/(abs(self.tx-self.posPirate[0]))), int((self.ty-self.posPirate[1])/(abs(self.ty-self.posPirate[1])))
