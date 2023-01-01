@@ -11,7 +11,7 @@ import hint_verification
 from hint_verification import hintVerify
 
 
-INPUT_FILE = 'input/map8_0.txt'
+INPUT_FILE = 'input/map16_0.txt'
 OUTPUT_FILE = 'output'
 
 

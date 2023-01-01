@@ -235,7 +235,7 @@ wins the game. -> WIN.
                 self.mask = self.mask*bmap
             case 6: #6. He tells you that you are the nearest person to the treasure (between you and the prison he is staying).
                 if self.pirate_pos == -1:
-                    pass
+                    return
                 y_ = self.pirate_pos[1]-self.pos[1]
                 x_ = self.pirate_pos[0]-self.pos[0]
                 r_ = (x_*(self.pirate_pos[0]+self.pos[0])+y_*(self.pirate_pos[1]+self.pos[1]))/2

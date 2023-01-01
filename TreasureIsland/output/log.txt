@@ -1,12 +1,17 @@
-2
+3
 WIN
 Turn 1
-Hint 1: The treasure is not contained in the right half of the map.
+Hint 1: The treasure is not contained anywhere in row 15 or column 6.
 Agent vefity hint: True
-Agent move to (1, 5)
+Agent move to (13, 5)
 
 Turn 2
-Hint 2: The treasure is somewhere in the boundary of 2 regions.
-Agent vefity hint: False
-Agent move to (1, 6) and small scan
+Hint 2: The treasure is somewhere between the gap of the rectangle from [13, 2] to [14, 4] and the rectangle from [0, 2] to [15, 7].
+Agent vefity hint: True
+Agent make a big scan
+
+Turn 3
+Hint 3: A rectangle area from (9,14) to (11,15) does not contain the treasure.
+Agent vefity hint: True
+Agent make a big scan
 
