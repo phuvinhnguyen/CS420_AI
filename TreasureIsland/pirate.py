@@ -298,38 +298,37 @@ class pirate:
 
         h = []
         while(True):
-            x = random.randint(1,15)
-            match x:
-                case 1:
-                    h = self.type1()
-                case 2:
-                    h = self.type2()
-                case 3:
-                    h = self.type3()
-                case 4:
-                    h = self.type4()
-                case 5:
-                    h = self.type5()
-                case 6:
-                    h = self.type6()
-                case 7:
-                    h = self.type7()
-                case 8:
-                    h = self.type8()
-                case 9:
-                    h = self.type9()
-                case 10:
-                    h = self.type10()
-                case 11:
-                    h = self.type11()
-                case 12:
-                    h = self.type12()
-                case 13:
-                    h = self.type13()
-                case 14:
-                    h = self.type14()
-                case 15:
-                    h = self.type15()
+            x = int(random.random()*1000)
+            if x<=75:
+                h = self.type1()
+            elif x<=150:
+                h = self.type2()
+            elif x<=225:
+                h = self.type3()
+            elif x<=300:
+                h = self.type4()
+            elif x<=375:
+                h = self.type5()
+            elif x<=450:
+                h = self.type6()
+            elif x<=480:
+                h = self.type7()
+            elif x<=555:
+                h = self.type8()
+            elif x<=630:
+                h = self.type9()
+            elif x<=705:
+                h = self.type10()
+            elif x<=780:
+                h = self.type11()
+            elif x<=810:
+                h = self.type12()
+            elif x<=885:
+                h = self.type13()
+            elif x<=960:
+                h = self.type14()
+            else:
+                h = self.type15()
             if (h[1]==True) or type == 0:
                 break
         return h
