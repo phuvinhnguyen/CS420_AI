@@ -7,9 +7,9 @@ def hintVerify(input):
         case 3:
             return "Region(s) "+str(input[2])+ " do(es) not contain treasure."
         case 4:
-            return "A rectangle area from "+str(input[2][0:1])+" to "+str(input[2][2:4])+" contains the treasure."
+            return "A rectangle area from ("+str(input[2][0])+","+str(input[2][1])+") to ("+str(input[2][2])+","+str(input[2][3])+") contains the treasure."
         case 5:
-            return "A rectangle area from "+str(input[2][0:1])+" to "+str(input[2][2:4])+" does not the treasure."
+            return "A rectangle area from ("+str(input[2][0])+","+str(input[2][1])+") to ("+str(input[2][2])+","+str(input[2][3])+") does not contain the treasure."
         case 6:
             return "You are the nearest person from the treasure."
         case 7:
@@ -63,6 +63,7 @@ def hintVerify(input):
                 t="northwest"
             return "The treasure is contained in the "+t+" part of the map."
         case 14:
-            return "The treasure is somewhere between the gap of the rectangle from "+str(input[2][0][0:1])+" to "+str(input[2][0][2:4])+" and the rectangle from "+str(input[2][1][0:1])+" to "+str(input[2][1][2:4])+"."
+            return "The treasure is somewhere between the gap of the rectangle from "+str(input[2][0])+" to "+str(input[2][1])+" and the rectangle from "+str(input[3][0])+" to "+str(input[3][1])+"."
+            #return "The treasure is somewhere between the gap of the rectangle "+str(input[2][0])+" and the rectangle "+str(input[2][1])+"."
         case 15:
             return "The treasure is in a region that has mountain."

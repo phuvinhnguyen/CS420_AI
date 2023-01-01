@@ -19,7 +19,7 @@ def displayText(map,view):
         for j in range(len(v[0])):
             v[i][j]=data[i][j]*view[i][j]
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize = (16,5))
     im = ax.imshow(v)
     for i in range(len(v)):
         for j in range(len(v[0])):
@@ -30,6 +30,7 @@ def displayText(map,view):
     fig.canvas.draw()       # draw the canvas, cache the renderer
     image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
     image  = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+    plt.close()
     return image
 
 def updateMap(z,t,k,map):
@@ -44,7 +45,7 @@ def get_init_place(mmap:nmap):
             return [pos[0][sel],pos[1][sel]]
 
 if __name__ == '__main__':
-    mmap = nmap("input/map100_1.txt")
+    mmap = nmap("input/map32_0.txt")
     pir = pirate.pirate(mmap)
     maps = [] #lưu giá trị các bước di chuyễn
     agent_views = []
@@ -68,14 +69,6 @@ if __name__ == '__main__':
         action = agent.step(input)
         agent_view = copy.deepcopy(agent.mask.mask)
         log.append("Hint "+str(turn)+": "+hintVerify(input))
-
-        if agent.WIN == True:
-            result = 'WIN'
-            break
-        elif pir.WIN == True:
-            result = 'LOSE'
-            break
-
         # position of pirate
         if rpp > 0:
             rpp -= 1
@@ -104,6 +97,13 @@ if __name__ == '__main__':
         updateMap(pirate_pos[0],pirate_pos[1],"Pr",map)
         maps.append(map)
         logs.append(log)
+
+        if agent.WIN == True:
+            result = 'WIN'
+            break
+        elif pir.WIN == True:
+            result = 'LOSE'
+            break
     
     with open('output/o.txt', '+w') as wf:
         #for map, agen_view in zip(maps, agent_views):
