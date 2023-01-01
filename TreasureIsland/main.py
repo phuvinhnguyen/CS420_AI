@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import imageio.v3 as iio
 import copy
+import hint_verification
+from hint_verification import hintVerify
 
 
 def displayText(map):
@@ -40,15 +42,51 @@ if __name__ == '__main__':
     init_place = get_init_place(mmap) #generate initial place
     result = None
     rpp = mmap.turnnumber_pp
-    
+    logs = []
+    turn = 0
     agent = agentkm(init_place, mmap)
 
     while True:
+        turn +=1
+        log = []
+        log.append(turn)
+        
+        agent_prev_pos = agent.report()
+        pir.getAgenPos(agent)
+        pirate_prev_pos = pir.report()
+        input = pir.hint(turn==1)
+        #action return 'move','scan','move and scan'
+        action = agent.step(input)
+        agent_view = copy.deepcopy(agent.mask.mask)
+        log.append("Hint "+str(turn)+": "+hintVerify(input))
         # position of pirate
         if rpp > 0:
             rpp -= 1
         else:
             agent.pirate_pos = pir.posPirate
+            if rpp ==0:
+                log.append('Pirate revealed that he is stayed at '+str(pir.posPirate))
+            else: 
+                log.append('Pirate move to '+str(pir.posPirate))
+            rpp -=1
+        #print(input)
+        #print(agent_view)
+
+        agent_views.append(agent_view)
+        agent_pos = agent.report()
+        pirate_pos = pir.report()
+        log.append("Agent vefity hint: "+str(input[1]))
+        if (action=="move"):
+            log.append("Agent move to "+str(agent_pos))
+        elif (action=="move and scan"):
+            log.append("Agent move to "+str(agent_pos)+" and small scan")
+        else:
+            log.append("Agent make a big scan")
+        map=copy.deepcopy(mmap.mmap)
+        updateMap(agent_pos[0],agent_pos[1],"A",map)
+        updateMap(pirate_pos[0],pirate_pos[1],"Pr",map)
+        maps.append(map)
+        logs.append(log)
 
         if agent.WIN == True:
             result = 'WIN'
@@ -56,37 +94,25 @@ if __name__ == '__main__':
         elif pir.WIN == True:
             result = 'LOSE'
             break
-            
-
-        agent_prev_pos = agent.report()
-        pir.getAgenPos(agent)
-        pirate_prev_pos = pir.report()
-        input = pir.hint()
-        #action return 'move','scan','move and scan'
-        action = agent.step(input)
-        agent_view = copy.deepcopy(agent.mask.mask)
-
-        #print(input)
-        #print(agent_view)
-
-        agent_views.append(agent_view)
-        agent_pos = agent.report()
-        pirate_pos = pir.report()
-        map=copy.deepcopy(mmap.mmap)
-        updateMap(agent_pos[0],agent_pos[1],"A",map)
-        updateMap(pirate_pos[0],pirate_pos[1],"Pr",map)
-        maps.append(map)
     
     with open('output/o.txt', '+w') as wf:
-        for map, agen_view in zip(maps, agent_views):
-            for line in map:
-                wf.write(str(line)+'\n')
-            wf.write('\n')
-            for line in agent_view:
-                wf.write(str(line)+'\n')
-            wf.write('-----------------------------------\n')
-        wf.write(result)
+        #for map, agen_view in zip(maps, agent_views):
+        #    for line in map:
+        #        wf.write(str(line)+'\n')
+        #    wf.write('\n')
+        #    for line in agent_view:
+        #        wf.write(str(line)+'\n')
+        #   wf.write('-----------------------------------\n')
+        wf.write(str(len(logs))+'\n')
+        wf.write(result+'\n')
 
+        for i in logs:
+            wf.write("Turn "+str(i[0])+'\n')
+            for j in range(1,len(i)):
+                wf.write(i[j]+'\n')
+            wf.write('\n')
+
+    #print(logs)
     #print(maps[0])
     #show result
     # Generating data for the heat map

@@ -290,7 +290,7 @@ class pirate:
         # if self.posPirate[0] == self.tx and self.posPirate[1] == self.ty:
         #     self.WIN = True
             
-    def hint(self, type=1):
+    def hint(self, type):
         if self.mcountdown != 0:
             self.mcountdown -= 1
         else:
