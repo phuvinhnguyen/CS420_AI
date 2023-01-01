@@ -214,13 +214,13 @@ class pirate:
             case 4: #S
                 return [13, self.tx-int(self.map.mapsize[0]/2) >= 0 and (abs(self.ty-int(self.map.mapsize[1]/2))/max(abs(self.tx-int(self.map.mapsize[0]/2))*1.0,0.001)) < 1, "S"]
             case 5: #SE
-                return [13, (self.tx >= int((self.map.mapsize[0] - 1)/2)) and (self.ty >= int((self.map.mapsize[1] - 1)/2)), "SE"]
+                return [13, (self.tx >= int((self.map.mapsize[0])/2)) and (self.ty >= int((self.map.mapsize[1])/2)), "SE"]
             case 6: #EN
-                return [13, (self.tx <= int((self.map.mapsize[0] - 1)/2)) and (self.ty >= int((self.map.mapsize[1] - 1)/2)), "NE"]
+                return [13, (self.tx < int((self.map.mapsize[0])/2)) and (self.ty >= int((self.map.mapsize[1])/2)), "NE"]
             case 7: #NW
-                return [13, (self.tx <= int((self.map.mapsize[0] - 1)/2)) and (self.ty <= int((self.map.mapsize[1] - 1)/2)), "WS"]
+                return [13, (self.tx < int((self.map.mapsize[0])/2)) and (self.ty < int((self.map.mapsize[1])/2)), "WS"]
             case 8: #WS
-                return [13, (self.tx >= int((self.map.mapsize[0] - 1)/2)) and (self.ty <= int((self.map.mapsize[1] - 1)/2)), "WE"]
+                return [13, (self.tx >= int((self.map.mapsize[0])/2)) and (self.ty < int((self.map.mapsize[1])/2)), "WE"]
 
     def type14(self):
         bl=random.randint(3,(self.map.mapsize[1] - 1))

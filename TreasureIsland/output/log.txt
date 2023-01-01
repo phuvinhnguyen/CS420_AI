@@ -1,17 +1,33 @@
-3
+6
 WIN
 Turn 1
-Hint 1: The treasure is not contained anywhere in row 15 or column 6.
-Agent vefity hint: True
-Agent move to (13, 5)
-
-Turn 2
-Hint 2: The treasure is somewhere between the gap of the rectangle from [13, 2] to [14, 4] and the rectangle from [0, 2] to [15, 7].
+Hint 1: Tile(s) [[9, 9, 4, 13, 4, 8, 8, 10, 0, 12], [12, 10, 5, 0, 4, 6, 11, 10, 5, 15]] do(es) not contain treasure.
 Agent vefity hint: True
 Agent make a big scan
 
+Turn 2
+Hint 2: The treasure is somewhere in the boundary of 2 regions 5 and 2.
+Agent vefity hint: False
+Agent move to (10, 14)
+
 Turn 3
-Hint 3: A rectangle area from (9,14) to (11,15) does not contain the treasure.
+Hint 3: Tile(s) [[12, 11, 4, 15, 13, 14, 5, 2, 10], [7, 7, 11, 12, 4, 13, 5, 12, 6]] do(es) not contain treasure.
+Agent vefity hint: True
+Agent make a big scan
+
+Turn 4
+Hint 4: The treasure is somewhere in the boundary of 2 regions.
+Pirate revealed that he stays at [13, 1]
+Agent vefity hint: False
+Agent move to (11, 12)
+
+Turn 5
+Hint 5: Region(s) [3, 0] do(es) not contain treasure.
+Agent vefity hint: True
+Agent make a big scan
+
+Turn 6
+Hint 6: One region in the list [4, 5, 1] contains treasure.
 Agent vefity hint: True
 Agent make a big scan
 
