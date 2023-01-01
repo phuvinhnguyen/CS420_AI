@@ -62,7 +62,8 @@ if __name__ == '__main__':
         pir.getAgenPos(agent)
         pirate_prev_pos = pir.report()
         input = pir.hint()
-        agent.step(input)
+        #action return 'move','scan','move and scan'
+        action = agent.step(input)
         agent_view = copy.deepcopy(agent.mask.mask)
 
         #print(input)
