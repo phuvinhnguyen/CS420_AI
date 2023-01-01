@@ -27,9 +27,11 @@ def updateMap(x,y,z,t,k,map):
     
 def get_init_place(mmap:nmap):
     m = var(mmap.mapsize, mmap.M[0]+mmap.region[0][0], mmap.M[1]+mmap.region[0][1], 0)
-    pos = np.where(m.mask==1)
-    sel = random.randint(0, len(pos[0])-1)
-    return [pos[0][sel],pos[1][sel]]
+    while True:
+        pos = np.where(m.mask==1)
+        sel = random.randint(0, len(pos[0])-1)
+        if 'P' not in mmap.mmap[pos[0][sel]][pos[1][sel]]:
+            return [pos[0][sel],pos[1][sel]]
 
 if __name__ == '__main__':
     mmap = nmap('input/map64_1.txt')

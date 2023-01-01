@@ -73,7 +73,7 @@ class pirate:
             x=random.randint(0, self.region - 1)
             if x not in regionList:
                 regionList.append(x)
-        t = self.map.mmap[self.tx][self.ty].replace('T','')
+        t = self.map.mmap[self.tx][self.ty][0]
         if (int(t) in regionList):
             return [2, True, regionList]
         else:
@@ -88,9 +88,9 @@ class pirate:
                 regionList.append(x)
         t = self.map.mmap[self.tx][self.ty].replace('T','')
         if (int(t) in regionList):
-            return [2, False, regionList]
+            return [3, False, regionList]
         else:
-            return [2, True, regionList]
+            return [3, True, regionList]
 
     def type4(self):
         l=int(random.randint(0,self.map.mapsize[1] - 1)) + 1

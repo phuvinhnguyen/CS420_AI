@@ -129,6 +129,14 @@ wins the game. -> WIN.
         self.pos = path[-1]
         self.scan(len(path))
 
+        unique, counts = np.unique(self.mask.mask, return_counts=True)
+        try:
+            x = dict(zip(unique, counts))[1]
+        except:
+            x = 0
+        if x == 1:
+            self.WIN = True
+
 
     def scan(self, typ:int):
         xb,xe,yb,ye = 0,0,0,0
