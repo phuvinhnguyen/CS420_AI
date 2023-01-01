@@ -57,6 +57,8 @@ if __name__ == '__main__':
     agent = agentkm(init_place, mmap)
 
     while True:
+        #print(agent.WIN, '\n')
+
         turn +=1
         log = []
         log.append(turn)
@@ -68,6 +70,8 @@ if __name__ == '__main__':
         #action return 'move','scan','move and scan'
         action = agent.step(input)
         agent_view = copy.deepcopy(agent.mask.mask)
+        agent_views.append(agent_view)
+
         log.append("Hint "+str(turn)+": "+hintVerify(input))
         # position of pirate
         if rpp > 0:
@@ -82,7 +86,6 @@ if __name__ == '__main__':
         #print(input)
         #print(agent_view)
 
-        agent_views.append(agent_view)
         agent_pos = agent.report()
         pirate_pos = pir.report()
         log.append("Agent vefity hint: "+str(input[1]))
@@ -97,6 +100,9 @@ if __name__ == '__main__':
         updateMap(pirate_pos[0],pirate_pos[1],"Pr",map)
         maps.append(map)
         logs.append(log)
+
+
+        #print(agent.WIN)
 
         if agent.WIN == True:
             result = 'WIN'

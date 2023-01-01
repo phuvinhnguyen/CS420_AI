@@ -1,232 +1,100 @@
-39
+17
 WIN
 Turn 1
-Hint 1: Tile(s) [[31, 3, 17, 3, 26, 11, 18], [23, 8, 17, 7, 8, 25, 10]] do(es) not contain treasure.
+Hint 1: A rectangle area from (6,0) to (12,1) does not contain the treasure.
 Agent vefity hint: True
-Agent move to (21, 30) and small scan
+Agent move to (14, 27)
 
 Turn 2
-Hint 2: The treasure is in a region that has mountain.
+Hint 2: The treasure is somewhere in the boundary of 2 regions 5 and 0.
 Agent vefity hint: False
-Agent move to (25, 26)
+Agent move to (11, 30)
 
 Turn 3
-Hint 3: The treasure is in a region that has mountain.
+Hint 3: One region in the list [8, 3, 6, 5, 4] contains treasure.
 Agent vefity hint: False
-Agent move to (25, 24)
+Agent move to (14, 26)
 
 Turn 4
-Hint 4: Tile(s) [[22, 21, 18, 26, 11, 6], [30, 22, 10, 20, 5, 2]] do(es) not contain treasure.
-Agent vefity hint: True
-Agent move to (22, 25)
+Hint 4: A rectangle area from (31,22) to (31,31) contains the treasure.
+Agent vefity hint: False
+Agent move to (18, 23)
 
 Turn 5
-Hint 5: The treasure is somewhere in the boundary of 2 regions.
-Pirate revealed that he stays at [12, 5]
+Hint 5: The treasure is not contained in the upper half of the map.
+Pirate revealed that he stays at [17, 7]
 Agent vefity hint: False
-Agent move to (18, 27)
+Agent move to (20, 21)
 
 Turn 6
-Hint 6: The treasure is somewhere in the boundary of 2 regions 8 and 2.
-Pirate move to [12, 5]
-Agent vefity hint: False
-Agent move to (15, 30)
+Hint 6: The treasure is not contained anywhere in row 0 or column 16.
+Pirate move to [17, 7]
+Agent vefity hint: True
+Agent move to (21, 19)
 
 Turn 7
-Hint 7: A rectangle area from (30,25) to (31,26) does not contain the treasure.
-Pirate move to [12, 5]
+Hint 7: A rectangle area from (23,31) to (31,31) does not contain the treasure.
+Pirate move to [17, 7]
 Agent vefity hint: True
-Agent move to (17, 26)
+Agent move to (18, 23)
 
 Turn 8
-Hint 8: A rectangle area from (22,25) to (26,31) does not contain the treasure.
-Pirate move to [12, 5]
+Hint 8: A rectangle area from (5,26) to (12,31) contains the treasure.
+Pirate move to [17, 7]
+Agent vefity hint: False
+Agent move to (22, 20)
+
+Turn 9
+Hint 9: Tile(s) [[3, 29, 29, 31], [22, 26, 12, 2]] do(es) not contain treasure.
+Pirate move to [17, 7]
 Agent vefity hint: True
 Agent move to (19, 24)
 
-Turn 9
-Hint 9: The treasure is contained in the northwest part of the map.
-Pirate move to [12, 5]
-Agent vefity hint: False
-Agent move to (19, 24) and small scan
-
 Turn 10
-Hint 10: The treasure is somewhere in an area bounded by 2-3 tiles from sea.
-Pirate move to [12, 5]
+Hint 10: The treasure is in a region that has mountain.
+Pirate move to [17, 7]
 Agent vefity hint: False
-Agent move to (15, 27)
+Agent move to (15, 28)
 
 Turn 11
-Hint 11: A rectangle area from (6,17) to (12,26) does not contain the treasure.
-Pirate move to [12, 5]
+Hint 11: A rectangle area from (17,4) to (21,6) does not contain the treasure.
+Pirate move to [17, 7]
 Agent vefity hint: True
-Agent move to (11, 30)
+Agent move to (19, 24)
 
 Turn 12
-Hint 12: Tile(s) [[0, 17, 3, 20, 13, 9, 24, 5, 10, 28, 10], [7, 31, 23, 16, 10, 23, 26, 12, 21, 17, 1]] do(es) not contain treasure.
-Pirate move to [12, 5]
-Agent vefity hint: True
-Agent move to (9, 30)
+Hint 12: The treasure is somewhere in the boundary of 2 regions.
+Pirate move to [17, 7]
+Agent vefity hint: False
+Agent move to (15, 28)
 
 Turn 13
-Hint 13: Tile(s) [[9, 3, 19], [25, 13, 7]] do(es) not contain treasure.
-Pirate move to [12, 5]
-Agent vefity hint: True
-Agent move to (9, 30) and small scan
+Hint 13: One region in the list [2, 1] contains treasure.
+Pirate move to [17, 7]
+Agent vefity hint: False
+Agent move to (17, 24)
 
 Turn 14
-Hint 14: One region in the list [1, 8, 3, 6, 7] contains treasure.
-Pirate move to [12, 5]
+Hint 14: The treasure is contained somewhere in row 16 and column 3.
+Pirate move to [17, 7]
 Agent vefity hint: False
-Agent move to (13, 26)
+Agent move to (19, 20)
 
 Turn 15
-Hint 15: The treasure is not contained anywhere in row 24 or column 12.
-Pirate move to [12, 5]
-Agent vefity hint: True
-Agent move to (14, 22)
+Hint 15: The treasure is in a region that has mountain.
+Pirate move to [17, 7]
+Agent vefity hint: False
+Agent move to (22, 16)
 
 Turn 16
-Hint 16: The treasure is contained in the northwest part of the map.
-Pirate move to [12, 5]
-Agent vefity hint: False
-Agent move to (18, 18)
-
-Turn 17
-Hint 17: The treasure is not contained anywhere in row 11 or column 15.
-Pirate move to [12, 5]
-Agent vefity hint: True
-Agent move to (22, 14)
-
-Turn 18
-Hint 18: A rectangle area from (0,22) to (3,30) does not contain the treasure.
-Pirate move to [12, 5]
-Agent vefity hint: True
-Agent move to (22, 14) and small scan
-
-Turn 19
-Hint 19: The treasure is somewhere in the boundary of 2 regions.
-Pirate move to [12, 5]
-Agent vefity hint: False
-Agent move to (21, 15) and small scan
-
-Turn 20
-Hint 20: The treasure is not contained anywhere in row 30 or column 23.
-Pirate move to [12, 5]
-Agent vefity hint: True
-Agent move to (22, 16) and small scan
-
-Turn 21
-Hint 21: The treasure is contained somewhere in row 24 and column 16.
-Pirate move to [12, 5]
+Hint 16: The treasure is somewhere in the boundary of 2 regions.
+Pirate move to [17, 7]
 Agent vefity hint: False
 Agent move to (26, 12)
 
-Turn 22
-Hint 22: Region(s) [1, 3, 7] do(es) not contain treasure.
-Pirate move to [12, 5]
-Agent vefity hint: True
-Agent move to (26, 12) and small scan
-
-Turn 23
-Hint 23: The treasure is in a region that has mountain.
-Pirate move to [12, 5]
+Turn 17
+Hint 17: The treasure is somewhere in an area bounded by 2-3 tiles from sea.
+Pirate move to [17, 7]
 Agent vefity hint: False
-Agent move to (23, 8)
-
-Turn 24
-Hint 24: You are the nearest person from the treasure.
-Pirate move to [12, 5]
-Agent vefity hint: True
-Agent move to (25, 6)
-
-Turn 25
-Hint 25: The treasure is somewhere in the boundary of 2 regions.
-Pirate move to [12, 5]
-Agent vefity hint: False
-Agent move to (25, 6) and small scan
-
-Turn 26
-Hint 26: The treasure is not contained anywhere in row 12 or column 24.
-Pirate move to [12, 5]
-Agent vefity hint: True
 Agent make a big scan
-
-Turn 27
-Hint 27: Region(s) [2, 8, 6] do(es) not contain treasure.
-Pirate move to [12, 5]
-Agent vefity hint: True
-Agent make a big scan
-
-Turn 28
-Hint 28: The treasure is somewhere in an area bounded by 2-3 tiles from sea.
-Pirate move to [12, 5]
-Agent vefity hint: False
-Agent move to (0, 0) and small scan
-
-Turn 29
-Hint 29: Region(s) [4] do(es) not contain treasure.
-Pirate move to [12, 5]
-Agent vefity hint: True
-Agent move to (0, 0) and small scan
-
-Turn 30
-Hint 30: Region(s) [2] do(es) not contain treasure.
-Pirate move to [12, 5]
-Agent vefity hint: True
-Agent move to (0, 0) and small scan
-
-Turn 31
-Hint 31: Region(s) [7, 5, 8] do(es) not contain treasure.
-Pirate move to [12, 5]
-Agent vefity hint: True
-Agent move to (0, 0) and small scan
-
-Turn 32
-Hint 32: One region in the list [1, 8] contains treasure.
-Pirate move to [12, 5]
-Agent vefity hint: False
-Agent move to (0, 0) and small scan
-
-Turn 33
-Hint 33: You are the nearest person from the treasure.
-Pirate move to [14, 5]
-Agent vefity hint: False
-Agent move to (0, 0) and small scan
-
-Turn 34
-Hint 34: The treasure is somewhere in the boundary of 2 regions 6 and 0.
-Pirate move to [16, 5]
-Agent vefity hint: False
-Agent move to (0, 0) and small scan
-
-Turn 35
-Hint 35: Region(s) [5, 8, 4] do(es) not contain treasure.
-Pirate move to [18, 5]
-Agent vefity hint: True
-Agent move to (0, 0) and small scan
-
-Turn 36
-Hint 36: You are the nearest person from the treasure.
-Pirate move to [20, 5]
-Agent vefity hint: False
-Agent move to (0, 0) and small scan
-
-Turn 37
-Hint 37: The treasure is contained somewhere in row 5 and column 18.
-Pirate move to [22, 5]
-Agent vefity hint: False
-Agent move to (0, 0) and small scan
-
-Turn 38
-Hint 38: The treasure is somewhere in the boundary of 2 regions.
-Pirate move to [24, 5]
-Agent vefity hint: False
-Agent move to (0, 0) and small scan
-
-Turn 39
-Hint 39: The treasure is somewhere between the gap of the rectangle from [3, 3] to [7, 12] and the rectangle from [2, 1] to [27, 26].
-Pirate move to [26, 5]
-Agent vefity hint: False
-Agent move to (0, 0) and small scan
 
