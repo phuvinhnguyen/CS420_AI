@@ -9,17 +9,17 @@ import imageio.v3 as iio
 import copy
 
 
-def displayText(map):
-    for i in range(len(data)):
-        for j in range(len(data[0])):
-            texts[i][j].remove()
-            texts[i][j] = ax.text(j, i, map[i][j],ha="center", va="center", color="w")
+# def displayText(map):
+#     for i in range(len(data)):
+#         for j in range(len(data[0])):
+#             texts[i][j].remove()
+#             texts[i][j] = ax.text(j, i, map[i][j],ha="center", va="center", color="w")
             
-    # Used to return the plot as an image rray
-    fig.canvas.draw()       # draw the canvas, cache the renderer
-    image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
-    image  = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
-    return image
+#     # Used to return the plot as an image rray
+#     fig.canvas.draw()       # draw the canvas, cache the renderer
+#     image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
+#     image  = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+#     return image
 
 def updateMap(x,y,z,t,k,map):
     # map[x][y].translate({ord(k): None})
@@ -35,6 +35,7 @@ if __name__ == '__main__':
     mmap = nmap('input/a.txt')
     pir = pirate.pirate(mmap)
     maps = [] #lưu giá trị các bước di chuyễn
+    agent_views = []
     init_place = get_init_place(mmap) #generate initial place
     result = None
     rpp = mmap.turnnumber_pp
@@ -54,13 +55,19 @@ if __name__ == '__main__':
         elif pir.WIN == True:
             result = 'LOSE'
             break
+            
+
         agent_prev_pos = agent.report()
         pir.getAgenPos(agent)
         pirate_prev_pos = pir.report()
         input = pir.hint()
         agent.step(input)
 
-        agent_view = agent.mask
+        print(input, mmap.Tx, mmap.Ty)
+        print(agent.mask.mask)
+
+        agent_view = copy.deepcopy(agent.mask.mask)
+        agent_views.append(agent_view)
         agent_pos = agent.report()
         pirate_pos = pir.report()
         map = copy.deepcopy(mmap.mmap)
@@ -68,28 +75,36 @@ if __name__ == '__main__':
         updateMap(pirate_prev_pos[0],pirate_prev_pos[1],pirate_pos[0],pirate_pos[1],"Pr",map)
         maps.append(map)
     
-
+    with open('output/o.txt', '+w') as wf:
+        for map, agen_view in zip(maps, agent_views):
+            for line in map:
+                wf.write(str(line)+'\n')
+            wf.write('\n')
+            for line in agent_view:
+                wf.write(str(line)+'\n')
+            wf.write('-----------------------------------\n')
+        wf.write(result)
     #show result
     # Generating data for the heat map
-    data = []
-    for i in range(len(mmap.mmap)):
-        d=[]
-        for j in range(len(mmap.mmap[0])):
-            t=mmap.mmap[i][j]
-            d.append(int(t.translate({ord(k): None for k in 'MPT'})))
-        data.append(d)
+    # data = []
+    # for i in range(len(mmap.mmap)):
+    #     d=[]
+    #     for j in range(len(mmap.mmap[0])):
+    #         t=mmap.mmap[i][j]
+    #         d.append(int(t.translate({ord(k): None for k in 'MPT'})))
+    #     data.append(d)
                   
-    fig = plt.figure()
-    # Function to show the heat map
-    fig, ax = plt.subplots()
-    im = ax.imshow(data)
+    # fig = plt.figure()
+    # # Function to show the heat map
+    # fig, ax = plt.subplots()
+    # im = ax.imshow(data)
 
-    texts=[]
-    for i in range(len(data)):
-        text=[]
-        for j in range(len(data[0])):
-            text.append(ax.text(j, i, "0",ha="center", va="center", color="w"))
-        texts.append(text)
-    #ims=[]
-    kwargs_write = {'fps':1.0, 'quantizer':'nq'}
-    iio.imwrite("./powers.gif", [displayText(i) for i in maps], duration=1000)
+    # texts=[]
+    # for i in range(len(data)):
+    #     text=[]
+    #     for j in range(len(data[0])):
+    #         text.append(ax.text(j, i, "0",ha="center", va="center", color="w"))
+    #     texts.append(text)
+    # #ims=[]
+    # kwargs_write = {'fps':1.0, 'quantizer':'nq'}
+    # iio.imwrite("./powers.gif", [displayText(i) for i in maps], duration=1000)

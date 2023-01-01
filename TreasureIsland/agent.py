@@ -207,10 +207,10 @@ wins the game. -> WIN.
                 bmap = None
                 if not input[1]:
                     bmap = var(self.mapsize,[],[],1)
-                    bmap.mask[input[2][0]:input[2][2]+1,input[2][1]:input[2][3]] = 1
+                    bmap.mask[input[2][0]:input[2][2]+1,input[2][1]:input[2][3]+1] = 1
                 else:
                     bmap = var(self.mapsize,[],[],0)
-                    bmap.mask[input[2][0]:input[2][2]+1,input[2][1]:input[2][3]] = 0
+                    bmap.mask[input[2][0]:input[2][2]+1,input[2][1]:input[2][3]+1] = 0
                 self.mask = self.mask*bmap
             case 6: #6. He tells you that you are the nearest person to the treasure (between you and the prison he is staying).
                 y_ = self.pirate_pos[1]-self.pos[1]
@@ -430,7 +430,10 @@ if __name__ == '__main__':
     mmap = nmap('input/a.txt')
     a = agentkm((2,2),mmap)
 
-    a.solveI([15,1,[[3,4],[5,5]],[[1,2],[6,6]]])
+    print(a.mask.mask)
+    a.step([5, True, [3, 6, 5, 7]])
+    print(a.mask.mask)
+    a.step([14,1,[[3,4],[5,5]],[[1,2],[6,6]]])
     print(a.mask.mask)
 
     # for _ in range(20):

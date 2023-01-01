@@ -79,10 +79,10 @@ o r = 0 is sea.
 
         if not HP:
             px,py = random.randint(0,size-1), random.randint(0,size-1)
-            self.mmap[py][px] += 'P'
+            self.mmap[px][py] += 'P'
 
         self.Tx,self.Ty = random.randint(0,size-1), random.randint(0,size-1)
-        self.mmap[self.Ty][self.Tx] += 'T'
+        self.mmap[self.Tx][self.Ty] += 'T'
 
     def save(self, filename:str):
         with open('./input/'+filename, 'w+') as wf:
@@ -99,3 +99,8 @@ o r = 0 is sea.
 
     def map(self):
         return self.mmap
+
+if __name__ == '__main__':
+    mmap = nmap()
+    mmap.generate(8)
+    mmap.save('a.txt')
