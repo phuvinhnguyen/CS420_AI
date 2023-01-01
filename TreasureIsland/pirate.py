@@ -168,8 +168,8 @@ class pirate:
         x=-1
         y=-1
         while (x==y):
-            x=random.randint(0,self.region)
-            y=random.randint(0,self.region)
+            x=random.randint(0,self.region-1)
+            y=random.randint(0,self.region-1)
         if ((x==t) or (y==t)):
             if ((x+y-t) in boundaryList):
                 return [9, True, [x,y]]
