@@ -168,8 +168,8 @@ class pirate:
         x=-1
         y=-1
         while (x==y):
-            x=random.randint(0,self.region)
-            y=random.randint(0,self.region)
+            x=random.randint(0,self.region-1)
+            y=random.randint(0,self.region-1)
         if ((x==t) or (y==t)):
             if ((x+y-t) in boundaryList):
                 return [9, True, [x,y]]
@@ -290,7 +290,7 @@ class pirate:
         # if self.posPirate[0] == self.tx and self.posPirate[1] == self.ty:
         #     self.WIN = True
             
-    def hint(self, type=1):
+    def hint(self, type):
         if self.mcountdown != 0:
             self.mcountdown -= 1
         else:
