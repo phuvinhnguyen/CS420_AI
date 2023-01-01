@@ -42,6 +42,7 @@ tile anywhere on the map EXCEPT tiles with label ”0”, and
 • If the agent scans an area containing the treasure, the agent
 wins the game. -> WIN.
 '''
+
     def get_goal_function(self, des):
         def dest(cell):
             return cell == des
@@ -118,7 +119,14 @@ wins the game. -> WIN.
                 self.tele == False
                 self.pos = des
             self.scan(0)
-            return
+            unique, counts = np.unique(self.mask.mask, return_counts=True)
+            try:
+                x = dict(zip(unique, counts))[1]
+            except:
+                x = 0
+            if x == 1:
+                self.WIN = True
+            return 'big scan'
         path = path[:5]
         for i in path:
             if 'T' in self.map.mmap[i[0]][i[1]]:
@@ -136,6 +144,11 @@ wins the game. -> WIN.
             x = 0
         if x == 1:
             self.WIN = True
+
+        if len(path) <= 2:
+            return 'move and scan'
+        else:
+            return 'move'
 
 
     def scan(self, typ:int):

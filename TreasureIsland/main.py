@@ -96,7 +96,6 @@ if __name__ == '__main__':
              t=mmap.mmap[i][j]
              d.append(int(t.translate({ord(k): None for k in 'MPT'})))
         data.append(d)
-    print(data)
                   
     fig = plt.figure()
     # Function to show the heat map
