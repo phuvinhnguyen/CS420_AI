@@ -42,10 +42,8 @@ class pirate:
         if (self.map.mmap[min(self.tx+1,self.map.mapsize[0] - 1)][self.ty].translate({ord(i): None for i in 'MPT'}) not in b):
             b.append(self.map.mmap[max(self.tx-1,0)][self.ty].translate({ord(i): None for i in 'MPT'}))
 
-        print(b)
         b = list(filter((t).__ne__, b))
         b = list(filter((int(t)).__ne__, b))
-        print(b)
 
         return b
 
