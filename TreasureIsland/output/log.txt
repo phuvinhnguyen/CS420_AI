@@ -1,0 +1,12 @@
+2
+WIN
+Turn 1
+Hint 1: The treasure is not contained in the right half of the map.
+Agent vefity hint: True
+Agent move to (1, 5)
+
+Turn 2
+Hint 2: The treasure is somewhere in the boundary of 2 regions.
+Agent vefity hint: False
+Agent move to (1, 6) and small scan
+
