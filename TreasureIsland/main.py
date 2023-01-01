@@ -11,9 +11,18 @@ import hint_verification
 from hint_verification import hintVerify
 
 
-def displayText(map):
-    for i in range(len(data)):
-        for j in range(len(data[0])):
+def displayText(map,view):
+    #fig = plt.figure()
+    # Function to show the heat map
+    v = view.copy()
+    for i in range(len(v)):
+        for j in range(len(v[0])):
+            v[i][j]=data[i][j]*view[i][j]
+
+    fig, ax = plt.subplots()
+    im = ax.imshow(v)
+    for i in range(len(v)):
+        for j in range(len(v[0])):
             texts[i][j].remove()
             texts[i][j] = ax.text(j, i, map[i][j],ha="center", va="center", color="w")
             
@@ -65,7 +74,7 @@ if __name__ == '__main__':
         else:
             agent.pirate_pos = pir.posPirate
             if rpp ==0:
-                log.append('Pirate revealed that he is stayed at '+str(pir.posPirate))
+                log.append('Pirate revealed that he stays at '+str(pir.posPirate))
             else: 
                 log.append('Pirate move to '+str(pir.posPirate))
             rpp -=1
@@ -123,11 +132,11 @@ if __name__ == '__main__':
              t=mmap.mmap[i][j]
              d.append(int(t.translate({ord(k): None for k in 'MPT'})))
         data.append(d)
-                  
     fig = plt.figure()
     # Function to show the heat map
     fig, ax = plt.subplots()
-    im = ax.imshow(data)
+    im = ax.imshow(data)      
+    
     #fig.tight_layout()
     #plt.show()
     texts=[]
@@ -138,4 +147,4 @@ if __name__ == '__main__':
         texts.append(text)
     ims=[]
     kwargs_write = {'fps':1.0, 'quantizer':'nq'}
-    iio.imwrite("./move.gif", [displayText(i) for i in maps], duration=1000)
+    iio.imwrite("./move.gif", [displayText(maps[i],agent_views[i]) for i in range(len(maps))], duration=1000)
