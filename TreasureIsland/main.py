@@ -17,9 +17,9 @@ def displayText(map,view):
     v = view.copy()
     for i in range(len(v)):
         for j in range(len(v[0])):
-            v[i][j]=data[i][j]*view[i][j]
+            v[i][j]=(data[i][j]*view[i][j])+(view[i][j]-1)
 
-    fig, ax = plt.subplots(figsize = (16,5))
+    fig, ax = plt.subplots()
     im = ax.imshow(v)
     for i in range(len(v)):
         for j in range(len(v[0])):
@@ -45,7 +45,7 @@ def get_init_place(mmap:nmap):
             return [pos[0][sel],pos[1][sel]]
 
 if __name__ == '__main__':
-    mmap = nmap("input/map32_0.txt")
+    mmap = nmap("input/map100_0.txt")
     pir = pirate.pirate(mmap)
     maps = [] #lưu giá trị các bước di chuyễn
     agent_views = []
@@ -58,6 +58,12 @@ if __name__ == '__main__':
 
     while True:
         #print(agent.WIN, '\n')
+        if agent.WIN == True:
+            result = 'WIN'
+            break
+        elif pir.WIN == True:
+            result = 'LOSE'
+            break
 
         turn +=1
         log = []
@@ -80,7 +86,7 @@ if __name__ == '__main__':
             agent.pirate_pos = pir.posPirate
             if rpp ==0:
                 log.append('Pirate revealed that he stays at '+str(pir.posPirate))
-            else: 
+            elif turn > len(copy.deepcopy(mmap.mmap)): 
                 log.append('Pirate move to '+str(pir.posPirate))
             rpp -=1
         #print(input)
@@ -104,12 +110,7 @@ if __name__ == '__main__':
 
         #print(agent.WIN)
 
-        if agent.WIN == True:
-            result = 'WIN'
-            break
-        elif pir.WIN == True:
-            result = 'LOSE'
-            break
+        
     
     with open('output/o.txt', '+w') as wf:
         #for map, agen_view in zip(maps, agent_views):
@@ -154,4 +155,4 @@ if __name__ == '__main__':
         texts.append(text)
     ims=[]
     kwargs_write = {'fps':1.0, 'quantizer':'nq'}
-    iio.imwrite("./move.gif", [displayText(maps[i],agent_views[i]) for i in range(len(maps))], duration=1000)
+    iio.imwrite("output/move.gif", [displayText(maps[i],agent_views[i]) for i in range(len(maps))], duration=1000)
