@@ -35,7 +35,7 @@ o r = 0 is sea.
             mask = '([0-9]+)'
             y_axis = 0
             for line in data[5:]:
-                l = line.split(';')
+                l = line[:-1].split(';')
                 x_axis = 0
                 for tile in l:
                     reg = int(re.findall(mask, tile)[0])

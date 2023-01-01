@@ -42,7 +42,10 @@ class pirate:
         if (self.map.mmap[min(self.tx+1,self.map.mapsize[0] - 1)][self.ty].translate({ord(i): None for i in 'MPT'}) not in b):
             b.append(self.map.mmap[max(self.tx-1,0)][self.ty].translate({ord(i): None for i in 'MPT'}))
 
-        b = list(filter((1).__ne__, b))
+        print(b)
+        b = list(filter((t).__ne__, b))
+        b = list(filter((int(t)).__ne__, b))
+        print(b)
 
         return b
 
@@ -115,9 +118,9 @@ class pirate:
 
     def type6(self): #passing position of agent
         xAgent, yAgent = self.posAgent[0], self.posAgent[1]
-        disPirate = math.sqrt((self.posPirate[0] - self.tx)**2 + (self.posPirate[1] - self.ty)**2)
-        disAgent = math.sqrt((xAgent - self.tx)**2 + (yAgent - self.ty)**2)
-        return [6,disAgent > disPirate]
+        disPirate = (abs(self.posPirate[0] - self.tx) + abs(self.posPirate[1] - self.ty))
+        disAgent = (abs(xAgent - self.tx) + abs(yAgent - self.ty))
+        return [6,disAgent < disPirate]
 
     def type7(self):
         r=-1
@@ -181,10 +184,11 @@ class pirate:
     def type11(self):
         x=random.randint(1,3)
         for i in range(1,x+1):
-            if ((self.map.mmap[max(self.tx-i,0)][self.ty]=="0") or 
+            if (((self.map.mmap[max(self.tx-i,0)][self.ty]=="0") or 
                 (self.map.mmap[min(self.tx+i,self.map.mapsize[0] - 1)][self.ty]=="0") or 
                 (self.map.mmap[self.tx][max(self.ty-i,0)]=="0") or 
-                (self.map.mmap[self.tx][min(self.ty+i,self.map.mapsize[1] - 1)]=="0")):
+                (self.map.mmap[self.tx][min(self.ty+i,self.map.mapsize[1] - 1)]=="0")) and
+                '0' not in self.map.mmap[self.tx][self.ty]):
                 return [11, True]
         return [11,False]
 
@@ -204,13 +208,13 @@ class pirate:
         x=random.randint(1,8)
         match x:
             case 1: #E
-                return [13, (((self.map.mapsize[0] - 1)*self.tx-(self.map.mapsize[1] - 1)*self.ty)>=0) and (((self.map.mapsize[0] - 1)*self.tx+(self.map.mapsize[1] - 1)*self.ty-(self.map.mapsize[1] - 1)*(self.map.mapsize[0] - 1))>=0), "E"]
+                return [13, self.ty-int(self.map.mapsize[1]/2) >= 0 and (abs(self.tx-int(self.map.mapsize[0]/2))/max(abs(self.ty-int(self.map.mapsize[1]/2))*1.0,0.001)) < 1, "E"]
             case 2: #N
-                return [13, (((self.map.mapsize[0] - 1)*self.tx-(self.map.mapsize[1] - 1)*self.ty)>=0) and (((self.map.mapsize[0] - 1)*self.tx+(self.map.mapsize[1] - 1)*self.ty-(self.map.mapsize[1] - 1)*(self.map.mapsize[0] - 1))<=0), "N"]
+                return [13, self.tx-int(self.map.mapsize[0]/2) < 0 and (abs(self.ty-int(self.map.mapsize[1]/2))/max(abs(self.tx-int(self.map.mapsize[0]/2))*1.0,0.001)) < 1, "N"]
             case 3: #W
-                return [13, (((self.map.mapsize[0] - 1)*self.tx-(self.map.mapsize[1] - 1)*self.ty)<=0) and (((self.map.mapsize[0] - 1)*self.tx+(self.map.mapsize[1] - 1)*self.ty-(self.map.mapsize[1] - 1)*(self.map.mapsize[0] - 1))<=0), "W"]
+                return [13, self.ty-int(self.map.mapsize[1]/2) < 0 and (abs(self.tx-int(self.map.mapsize[0]/2))/max(abs(self.ty-int(self.map.mapsize[1]/2))*1.0,0.001)) < 1, "W"]
             case 4: #S
-                return [13, (((self.map.mapsize[0] - 1)*self.tx-(self.map.mapsize[1] - 1)*self.ty)<=0) and (((self.map.mapsize[0] - 1)*self.tx+(self.map.mapsize[1] - 1)*self.ty-(self.map.mapsize[1] - 1)*(self.map.mapsize[0] - 1))>=0), "S"]
+                return [13, self.tx-int(self.map.mapsize[0]/2) >= 0 and (abs(self.ty-int(self.map.mapsize[1]/2))/max(abs(self.tx-int(self.map.mapsize[0]/2))*1.0,0.001)) < 1, "S"]
             case 5: #SE
                 return [13, (self.tx >= int((self.map.mapsize[0] - 1)/2)) and (self.ty >= int((self.map.mapsize[1] - 1)/2)), "SE"]
             case 6: #EN
