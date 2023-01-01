@@ -251,7 +251,7 @@ class pirate:
             self.posPirate[0] += (2-abs(xM)%2) * (-1 if xM < 0 else 1)
         elif yM != 0:
             self.posPirate[1] += (2-abs(yM)%2) * (-1 if yM < 0 else 1)
-        elif xM == 0:
+        if xM == 0 and yM == 0:
             self.WIN = True
 
         # xMove, yMove = int((self.tx-self.posPirate[0])/(abs(self.tx-self.posPirate[0]))), int((self.ty-self.posPirate[1])/(abs(self.ty-self.posPirate[1])))

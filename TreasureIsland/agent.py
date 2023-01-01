@@ -114,7 +114,7 @@ wins the game. -> WIN.
                                     successor_function=self.get_successor_function(self.grid),
                                     heuristic= self.get_heuristic(self.grid, des))
 
-        if path == None:
+        if path == None or (len(path)==1 and path[0][0]==self.pos[0] and path[0][1]==self.pos[1]):
             if self.tele == True:
                 self.tele == False
                 self.pos = des
