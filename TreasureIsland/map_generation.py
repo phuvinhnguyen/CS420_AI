@@ -102,5 +102,5 @@ o r = 0 is sea.
 
 if __name__ == '__main__':
     mmap = nmap()
-    mmap.generate(10)
+    mmap.generate(64)
     mmap.save('map64_1.txt')

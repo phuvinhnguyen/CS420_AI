@@ -74,7 +74,7 @@ class pirate:
             if x not in regionList:
                 regionList.append(x)
         t = self.map.mmap[self.tx][self.ty][0]
-        if (int(t) in regionList):
+        if (int(t[0]) in regionList):
             return [2, True, regionList]
         else:
             return [2, False, regionList]
@@ -87,7 +87,7 @@ class pirate:
             if x not in regionList:
                 regionList.append(x)
         t = self.map.mmap[self.tx][self.ty].replace('T','')
-        if (int(t) in regionList):
+        if (int(t[0]) in regionList):
             return [3, False, regionList]
         else:
             return [3, True, regionList]

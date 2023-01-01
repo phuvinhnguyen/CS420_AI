@@ -33,7 +33,7 @@ def get_init_place(mmap:nmap):
             return [pos[0][sel],pos[1][sel]]
 
 if __name__ == '__main__':
-    mmap = nmap("input/map64_1.txt")
+    mmap = nmap("input/map100_1.txt")
     pir = pirate.pirate(mmap)
     maps = [] #lưu giá trị các bước di chuyễn
     agent_views = []
