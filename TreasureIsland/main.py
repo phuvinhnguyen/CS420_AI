@@ -32,7 +32,7 @@ def get_init_place(mmap:nmap):
     return [pos[0][sel],pos[1][sel]]
 
 if __name__ == '__main__':
-    mmap = nmap('input/a.txt')
+    mmap = nmap('input/map64_1.txt')
     pir = pirate.pirate(mmap)
     maps = [] #lưu giá trị các bước di chuyễn
     agent_views = []
@@ -62,11 +62,11 @@ if __name__ == '__main__':
         pirate_prev_pos = pir.report()
         input = pir.hint()
         agent.step(input)
-
-        print(input, mmap.Tx, mmap.Ty)
-        print(agent.mask.mask)
-
         agent_view = copy.deepcopy(agent.mask.mask)
+
+        print(input)
+        print(agent_view)
+
         agent_views.append(agent_view)
         agent_pos = agent.report()
         pirate_pos = pir.report()

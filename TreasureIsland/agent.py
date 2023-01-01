@@ -198,10 +198,10 @@ wins the game. -> WIN.
                 bmap = None
                 if input[1]:
                     bmap = var(self.mapsize,[],[],1)
-                    bmap.mask[input[2][0]:input[2][2]+1,input[2][1]:input[2][3]] = 1
+                    bmap.mask[input[2][0]:input[2][2]+1,input[2][1]:input[2][3]+1] = 1
                 else:
                     bmap = var(self.mapsize,[],[],0)
-                    bmap.mask[input[2][0]:input[2][2]+1,input[2][1]:input[2][3]] = 0
+                    bmap.mask[input[2][0]:input[2][2]+1,input[2][1]:input[2][3]+1] = 0
                 self.mask = self.mask*bmap
             case 5: #5. A small rectangle area that doesn't has the treasure.
                 bmap = None
